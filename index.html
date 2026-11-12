@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OrePulse — AI Mineral Intelligence & Cloud Mining ERP</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Leaflet CSS & JS for Satellite Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F0F9FF',
+              100: '#E0F2FE',
+              200: '#BAE6FD',
+              300: '#7DD3FC',
+              400: '#38BDF8',
+              500: '#0EA5E9',
+              600: '#0284C7',
+              700: '#0369A1',
+              800: '#075985',
+              900: '#0C4A6E',
+              950: '#082F49'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #0F172A; }
+    .card-shadow { box-shadow: 0 10px 30px -5px rgba(2, 132, 199, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04); }
+    .card-shadow-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-shadow-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 35px -5px rgba(2, 132, 199, 0.16), 0 8px 16px -2px rgba(15, 23, 42, 0.06); }
+    #map { height: 440px; width: 100%; border-radius: 1rem; z-index: 10; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP NAVBAR -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('landing')">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-sky-400 flex items-center justify-center text-white shadow-md shadow-brand-500/30">
+          <i data-lucide="mountain-snow" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="text-2xl font-black tracking-tight text-slate-900">Ore<span class="text-brand-600">Pulse</span></span>
+            <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200">PAKISTAN</span>
+          </div>
+          <p class="text-[11px] text-slate-500 font-medium">AI & Mineral Intelligence Platform</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+        <button onclick="switchView('landing'); scrollToSection('pillars')" class="hover:text-brand-600 transition">4 Core Pillars</button>
+        <button onclick="switchView('landing'); scrollToSection('deeptech')" class="hover:text-brand-600 transition">Satellite AI (Space)</button>
+        <button onclick="switchView('landing'); scrollToSection('balochistan')" class="hover:text-brand-600 transition">Critical Minerals</button>
+        <button onclick="switchView('landing'); scrollToSection('research')" class="hover:text-brand-600 transition">Scientific Validation</button>
+      </nav>
+
+      <!-- CTA Buttons -->
+      <div class="flex items-center space-x-3">
+        <button id="viewToggleBtn" onclick="toggleView()" class="px-5 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-2 bg-brand-600 hover:bg-brand-700 text-white transition shadow-md shadow-brand-600/25">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span id="viewToggleText">Live Dashboard Demo</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- 1. LANDING PAGE (SKY BLUE & CLEAN WHITE THEME) -->
+  <!-- ========================================================= -->
+  <main id="landingView" class="pt-24 pb-20">
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-12 pb-20 overflow-hidden bg-gradient-to-b from-sky-50/80 via-white to-slate-50">
+      
+      <!-- Ambient Glow Background -->
+      <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-tr from-sky-200/40 via-blue-100/40 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        
+        <!-- SIFC & Govt Alignment Pill -->
+        <div class="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full bg-white border border-brand-200/90 text-xs font-semibold text-brand-900 shadow-sm mb-6">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Aligned with SIFC & Pakistan National Critical Minerals Framework</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-brand-600 font-bold">Balochistan & KPK</span>
+        </div>
+
+        <!-- Big Headline -->
+        <h1 class="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight leading-[1.15]">
+          The Digital Operating System for <br class="hidden sm:inline" />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-sky-500">Pakistan's Critical Mineral Wealth</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="mt-6 text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto font-normal leading-relaxed">
+          Eliminate <strong class="text-slate-900 font-semibold">weighbridge tampering and fleet fuel theft</strong> on the ground, while discovering new <strong class="text-brand-600 font-semibold">Copper and Chromite deposits from space</strong> using automated satellite AI.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onclick="switchView('dashboard')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow-lg shadow-brand-600/30 hover:scale-[1.02] transition flex items-center justify-center space-x-2.5">
+            <span>Open Interactive Dashboard</span>
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+          <button onclick="openPitchModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white border border-slate-300 hover:border-brand-400 text-slate-800 font-bold text-base hover:bg-slate-50 transition shadow-sm flex items-center justify-center space-x-2.5">
+            <i data-lucide="file-text" class="w-5 h-5 text-brand-600"></i>
+            <span>Executive Pitch Deck (One-Pager)</span>
+          </button>
+        </div>
+
+        <!-- 4 Quick Stats Banner -->
+        <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto bg-white border border-slate-200 card-shadow rounded-2xl p-6">
+          <div class="border-r border-slate-100 last:border-0 p-3">
+            <div class="text-3xl font-black text-brand-600 font-mono">$6 Trillion+</div>
+            <div class="text-xs font-semibold text-slate-500 mt-1">Est. National Mineral Reserves</div>
+          </div>
+          <div class="border-r border-slate-100 last:border-0 p-3">
+            <div class="text-3xl font-black text-slate-900 font-mono">70%</div>
+            <div class="text-xs font-semibold text-slate-500 mt-1">Exploration Time Reduced</div>
+          </div>
+          <div class="border-r border-slate-100 last:border-0 p-3">
+            <div class="text-3xl font-black text-emerald-600 font-mono">100%</div>
+            <div class="text-xs font-semibold text-slate-500 mt-1">Tamper-Proof Digital Challan</div>
+          </div>
+          <div class="p-3">
+            <div class="text-3xl font-black text-sky-500 font-mono">15-20%</div>
+            <div class="text-xs font-semibold text-slate-500 mt-1">Fuel Theft Losses Prevented</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 4 CORE PILLARS WITH REAL FIELD PICTURES & PROPER BOXES -->
+    <!-- ========================================================= -->
+    <section id="pillars" class="py-20 bg-white border-y border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-xs font-black uppercase tracking-wider text-brand-600 bg-brand-50 px-3.5 py-1.5 rounded-full border border-brand-200">UNIFIED ARCHITECTURE</span>
+          <h2 class="mt-4 text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">4 Pillars That Power Modern Mining</h2>
+          <p class="mt-4 text-base sm:text-lg text-slate-600 font-normal">
+            A comprehensive, field-tested technological solution for Pakistan's high-stakes extraction sector.
+          </p>
+        </div>
+
+        <!-- 4 Cards Grid (Balanced, Real Field Photos, Clear English Descriptions) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          
+          <!-- Box 1: Satellite AI Exploration -->
+          <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow card-shadow-hover flex flex-col justify-between group">
+            <div>
+              <div class="relative h-48 w-full overflow-hidden bg-slate-900">
+                <img 
+                  src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" 
+                  alt="Satellite Remote Sensing for Minerals" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[11px] font-bold text-brand-700 shadow">
+                  PILLAR 01 • DEEP TECH
+                </span>
+                <div class="absolute bottom-3 left-3 text-white text-xs font-mono font-medium flex items-center space-x-1.5">
+                  <i data-lucide="satellite" class="w-4 h-4 text-sky-400"></i>
+                  <span>Space-Borne Sensors</span>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-600 transition">Satellite AI Exploration</h3>
+                <p class="mt-3 text-sm text-slate-600 leading-relaxed font-normal">
+                  Ingests open European Space Agency (Sentinel-2) and NASA ASTER data. Deep learning algorithms identify hydrothermal alteration minerals (Argillic, Phyllic) indicative of Copper-Gold porphyry deposits before physical drilling.
+                </p>
+              </div>
+            </div>
+
+            <div class="px-6 pb-6 pt-2">
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-brand-600">
+                <span>Benchmark: KoBold Metals</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Box 2: Smart Weighbridge & Bilti -->
+          <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow card-shadow-hover flex flex-col justify-between group">
+            <div>
+              <div class="relative h-48 w-full overflow-hidden bg-slate-900">
+                <img 
+                  src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" 
+                  alt="Mining Truck at Weighbridge" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[11px] font-bold text-blue-700 shadow">
+                  PILLAR 02 • CORE ERP
+                </span>
+                <div class="absolute bottom-3 left-3 text-white text-xs font-mono font-medium flex items-center space-x-1.5">
+                  <i data-lucide="scale" class="w-4 h-4 text-blue-400"></i>
+                  <span>Zero Weight Tampering</span>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-600 transition">Smart Weighbridge & Bilti</h3>
+                <p class="mt-3 text-sm text-slate-600 leading-relaxed font-normal">
+                  Direct RS232 scale serial interface captures gross and tare weights with zero manual edit capability. Generates instant QR-coded digital bilti and calculates provincial royalty taxes automatically for checkpost compliance.
+                </p>
+              </div>
+            </div>
+
+            <div class="px-6 pb-6 pt-2">
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
+                <span>Mines Dept Regulatory Ready</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Box 3: Fleet & Fuel Loss AI -->
+          <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow card-shadow-hover flex flex-col justify-between group">
+            <div>
+              <div class="relative h-48 w-full overflow-hidden bg-slate-900">
+                <img 
+                  src="https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=800&q=80" 
+                  alt="Excavator and Dumpers in Open Pit Mine" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[11px] font-bold text-emerald-700 shadow">
+                  PILLAR 03 • PREDICTIVE AI
+                </span>
+                <div class="absolute bottom-3 left-3 text-white text-xs font-mono font-medium flex items-center space-x-1.5">
+                  <i data-lucide="fuel" class="w-4 h-4 text-emerald-400"></i>
+                  <span>Anti-Theft Telemetry</span>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-600 transition">Fleet & Fuel Loss AI</h3>
+                <p class="mt-3 text-sm text-slate-600 leading-relaxed font-normal">
+                  Correlates excavator and dumper engine operating hours, payload tonnages, and trip cycles against theoretical diesel consumption. Instantly flags fuel siphoning anomalies (>15% deviation) in real time.
+                </p>
+              </div>
+            </div>
+
+            <div class="px-6 pb-6 pt-2">
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-600">
+                <span>Saves $10k+ / month / site</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Box 4: Ore Blending & Quality Control -->
+          <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow card-shadow-hover flex flex-col justify-between group">
+            <div>
+              <div class="relative h-48 w-full overflow-hidden bg-slate-900">
+                <img 
+                  src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" 
+                  alt="Mineral Core Samples and Rock Ore" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[11px] font-bold text-purple-700 shadow">
+                  PILLAR 04 • QUALITY & YIELD
+                </span>
+                <div class="absolute bottom-3 left-3 text-white text-xs font-mono font-medium flex items-center space-x-1.5">
+                  <i data-lucide="gem" class="w-4 h-4 text-purple-300"></i>
+                  <span>Grade Optimization</span>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-600 transition">Ore Blending & Quality</h3>
+                <p class="mt-3 text-sm text-slate-600 leading-relaxed font-normal">
+                  Tracks assay purity across Run-of-Mine (ROM) and crushed stockpiles. Dynamic linear programming calculates optimal mixing ratios between low and high-grade stockpiles to satisfy export specifications (e.g., >42% Cr2O3 or Cu).
+                </p>
+              </div>
+            </div>
+
+            <div class="px-6 pb-6 pt-2">
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-purple-600">
+                <span>Chromite, Copper, Barite</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SATELLITE TO REVENUE DEEP TECH EXPLANATION -->
+    <!-- ========================================================= -->
+    <section id="deeptech" class="py-20 bg-slate-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <div>
+            <span class="text-xs font-black uppercase tracking-wider text-brand-600 bg-brand-50 px-3.5 py-1.5 rounded-full border border-brand-200">SPACE TECH IN MINING</span>
+            <h2 class="mt-4 text-3xl sm:text-4xl font-black text-slate-900 leading-tight">
+              Detecting Subsurface Mineral Alterations from Orbit
+            </h2>
+            <p class="mt-4 text-slate-600 text-base leading-relaxed">
+              European Space Agency (ESA Sentinel-2) and NASA (ASTER) constellations pass over Pakistan every 5 days. Their multispectral feeds are 100% public and free to access via automated API pipelines.
+            </p>
+
+            <div class="mt-8 space-y-4">
+              
+              <div class="flex items-start space-x-4 p-5 rounded-2xl bg-white border border-slate-200 card-shadow">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center font-bold text-sm shrink-0 border border-brand-200">
+                  1
+                </div>
+                <div>
+                  <h4 class="text-slate-900 font-bold text-base">Shortwave Infrared (SWIR) Absorption</h4>
+                  <p class="text-slate-600 text-sm mt-1">Standard optical cameras only capture RGB light. SWIR sensors register the exact chemical absorption spectra of clay and mica minerals associated with copper-gold porphyry systems.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-4 p-5 rounded-2xl bg-white border border-slate-200 card-shadow">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-sm shrink-0 border border-blue-200">
+                  2
+                </div>
+                <div>
+                  <h4 class="text-slate-900 font-bold text-base">Band Ratio Mathematical Indexing</h4>
+                  <p class="text-slate-600 text-sm mt-1">Our algorithms divide Band 11 by Band 12 to isolate phyllic and argillic alteration signatures while filtering out sand dunes and sparse desert vegetation noise.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-4 p-5 rounded-2xl bg-white border border-slate-200 card-shadow">
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-sm shrink-0 border border-emerald-200">
+                  3
+                </div>
+                <div>
+                  <h4 class="text-slate-900 font-bold text-base">Actionable Target GPS Coordinates</h4>
+                  <p class="text-slate-600 text-sm mt-1">Instead of spending millions on random trial-and-error drilling, exploration teams receive high-probability anomaly coordinates directly on their dashboard.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Visual Demonstration Card -->
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 card-shadow">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                <span class="text-xs font-mono font-bold text-slate-500 ml-2">chagai_satellite_pipeline.py</span>
+              </div>
+              <span class="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">SENTINEL-2 LIVE</span>
+            </div>
+
+            <div class="mt-4 font-mono text-xs text-slate-800 space-y-2 bg-slate-900 text-slate-200 p-5 rounded-2xl overflow-x-auto">
+              <p class="text-slate-400"># Query Chagai Magmatic Arc (Balochistan)</p>
+              <p><span class="text-sky-400">target_sector</span> = "Reko Diq Sub-quadrant"</p>
+              <p><span class="text-sky-400">center_coords</span> = [28.9832° N, 64.4210° E]</p>
+              <p class="text-slate-400 mt-2"># Compute SWIR Ratio (B11: 2.20 µm / B12: 1.61 µm)</p>
+              <p>alteration_index = compute_swir_ratio(band11, band12)</p>
+              <p class="text-emerald-400 font-bold mt-2">>> High Hydrothermal Anomaly Identified: Target #04</p>
+              <p class="text-amber-300 font-bold">>> Porphyry Chalcopyrite / Pyrite Match: 89.4%</p>
+            </div>
+
+            <div class="mt-6 p-4 rounded-xl bg-brand-50 border border-brand-200 flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-600 shrink-0"></i>
+                <span class="text-xs font-bold text-brand-900">Zero physical exploration CapEx to commence scanning.</span>
+              </div>
+              <button onclick="switchView('dashboard')" class="text-xs font-bold text-brand-700 hover:text-brand-800 underline shrink-0 ml-2">
+                View on Map →
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- BALOCHISTAN STRATEGIC FOCUS -->
+    <!-- ========================================================= -->
+    <section id="balochistan" class="py-20 bg-white border-t border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-xs font-black uppercase tracking-wider text-brand-600 bg-brand-50 px-3.5 py-1.5 rounded-full border border-brand-200">STRATEGIC OPPORTUNITY</span>
+          <h2 class="mt-4 text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">Why Pakistan? Why Now?</h2>
+          <p class="mt-4 text-base sm:text-lg text-slate-600 font-normal">
+            The global race for AI compute chips and renewable energy grids requires an unprecedented supply of critical minerals.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 card-shadow">
+            <div class="w-12 h-12 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-xl mb-5">
+              1
+            </div>
+            <h4 class="text-xl font-bold text-slate-900">Reko Diq & Copper</h4>
+            <h5 class="text-sm font-semibold text-brand-600 mt-1">The Fuel of AI Chips & Grids</h5>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed font-normal">
+              Every Nvidia GPU data center, semiconductor fab, and electric vehicle requires thousands of kilograms of high-grade copper. Balochistan holds one of the world's 5 largest undeveloped copper-gold deposits.
+            </p>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 card-shadow">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xl mb-5">
+              2
+            </div>
+            <h4 class="text-xl font-bold text-slate-900">Government & SIFC Mandate</h4>
+            <h5 class="text-sm font-semibold text-blue-600 mt-1">Highest National Economic Priority</h5>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed font-normal">
+              The Special Investment Facilitation Council (SIFC) has positioned mineral mining as Pakistan's primary economic engine, streamlining provincial regulations and incentivizing modern tech platforms.
+            </p>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 card-shadow">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xl mb-5">
+              3
+            </div>
+            <h4 class="text-xl font-bold text-slate-900">Certified Supply Chains</h4>
+            <h5 class="text-sm font-semibold text-emerald-600 mt-1">International Export Standard</h5>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed font-normal">
+              Western buyers in North America and Europe require transparent, auditable, and ethically tracked minerals. OrePulse guarantees an immutable digital audit trail from pit face to sea port.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SCIENTIFIC RESEARCH & PAPERS CITATIONS -->
+    <!-- ========================================================= -->
+    <section id="research" class="py-20 bg-slate-50 border-t border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="max-w-3xl mb-12">
+          <span class="text-xs font-black uppercase tracking-wider text-brand-600 bg-brand-50 px-3.5 py-1.5 rounded-full border border-brand-200">SCIENTIFIC VALIDATION</span>
+          <h2 class="mt-4 text-3xl font-black text-slate-900">Peer-Reviewed Research On Balochistan</h2>
+          <p class="text-slate-600 text-sm mt-2">Our platform is grounded in published methodologies from leading geological surveys and remote sensing journals.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow flex items-start space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center shrink-0 border border-brand-200">
+              <i data-lucide="book-open" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700">USGS Scientific Investigations</span>
+              <h4 class="text-slate-900 font-bold text-base mt-1">Regional Mapping of Hydrothermally Altered Igneous Rocks Along the Chagai Belt</h4>
+              <p class="text-slate-600 text-xs mt-2 leading-relaxed">Benchmark regional remote sensing study utilizing ASTER SWIR logical operators to isolate phyllic and argillic copper alterations across western Pakistan.</p>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow flex items-start space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 border border-blue-200">
+              <i data-lucide="book-open" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700">MDPI Remote Sensing Journal</span>
+              <h4 class="text-slate-900 font-bold text-base mt-1">Lithological Mapping & Mineral Exploration in Ophiolitic Zones: Lasbela, Balochistan</h4>
+              <p class="text-slate-600 text-xs mt-2 leading-relaxed">Demonstrates the application of Principal Component Analysis (PCA) and spectral band ratios to map economic metallic mineralization in arid Pakistani terrains.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-12 text-slate-600 text-xs">
+      <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-2">
+          <span class="font-extrabold text-slate-900 font-mono text-sm">OrePulse Pakistan</span>
+          <span>© 2026. Empowering Pakistan's Critical Minerals.</span>
+        </div>
+        <div class="flex space-x-6 font-semibold">
+          <button onclick="openPitchModal()" class="hover:text-brand-600 transition">Pitch Deck</button>
+          <button onclick="switchView('dashboard')" class="hover:text-brand-600 transition">Live Dashboard</button>
+          <a href="#deeptech" class="hover:text-brand-600 transition">Technology</a>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+
+  <!-- ========================================================= -->
+  <!-- 2. LIVE INTERACTIVE DASHBOARD VIEW (ERP + SATELLITE DEMO) -->
+  <!-- ========================================================= -->
+  <div id="dashboardView" class="hidden pt-20 pb-16 min-h-screen bg-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Dashboard Top Header Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between py-6 border-b border-slate-200 gap-4">
+        <div>
+          <div class="flex items-center space-x-3">
+            <h1 class="text-2xl font-black text-slate-900">Chagai West Site #04 — Command Center</h1>
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center space-x-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>LIVE TELEMETRY ON</span>
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mt-1 font-mono">Lease Code: BL-CHG-2026-88A | Target Minerals: Copper & Chromite</p>
+        </div>
+
+        <!-- Dashboard Sub-Tabs -->
+        <div class="flex items-center space-x-2 bg-white p-1.5 rounded-xl border border-slate-200 text-xs shadow-sm">
+          <button onclick="setDashTab('overview')" id="tab-overview" class="dash-tab px-4 py-2 rounded-lg font-bold bg-brand-600 text-white shadow-sm">Overview</button>
+          <button onclick="setDashTab('satellite')" id="tab-satellite" class="dash-tab px-4 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900">Satellite AI Explorer</button>
+          <button onclick="setDashTab('weighbridge')" id="tab-weighbridge" class="dash-tab px-4 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900">Smart Weighbridge</button>
+          <button onclick="setDashTab('fleet')" id="tab-fleet" class="dash-tab px-4 py-2 rounded-lg font-medium text-slate-600 hover:text-slate-900">Fleet & Fuel AI</button>
+        </div>
+      </div>
+
+      <!-- KPI METRIC CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 my-6">
+        
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-500 uppercase">Today's Dispatch</span>
+            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-200">
+              <i data-lucide="truck" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="text-3xl font-black text-slate-900 font-mono mt-3">1,480.50 <span class="text-sm font-normal text-slate-500">Tons</span></div>
+          <div class="text-xs text-emerald-600 mt-2 font-semibold flex items-center space-x-1">
+            <i data-lucide="trending-up" class="w-4 h-4"></i>
+            <span>34 Trucks Dispatched (100% Digital Bilti)</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-500 uppercase">Average Ore Grade</span>
+            <div class="w-9 h-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center border border-brand-200">
+              <i data-lucide="gem" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="text-3xl font-black text-brand-600 font-mono mt-3">43.8% <span class="text-sm font-normal text-slate-500">Grade</span></div>
+          <div class="text-xs text-slate-500 mt-2 font-medium">Export Spec: 42.0% (Passing QA Spec)</div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-500 uppercase">AI Fuel Theft Alerts</span>
+            <div class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center border border-red-200">
+              <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="text-3xl font-black text-red-600 font-mono mt-3">1 Flagged</div>
+          <div class="text-xs text-red-600 mt-2 font-bold font-mono">Dumper-07: +24% Burn Spike</div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-500 uppercase">Govt Royalty Accrued</span>
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
+              <i data-lucide="receipt" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="text-3xl font-black text-slate-900 font-mono mt-3">PKR 740,250</div>
+          <div class="text-xs text-slate-500 mt-2 font-mono">Balochistan Mines Dept e-Challans</div>
+        </div>
+
+      </div>
+
+      <!-- DASHBOARD TAB CONTENT AREAS -->
+
+      <!-- TAB 1: OVERVIEW & SATELLITE EXPLORER -->
+      <div id="content-overview" class="dash-content space-y-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- SATELLITE MAP (Col 1 & 2) -->
+          <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 card-shadow flex flex-col justify-between">
+            <div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                <div>
+                  <h3 class="text-lg font-black text-slate-900 flex items-center space-x-2">
+                    <i data-lucide="satellite" class="w-5 h-5 text-brand-600"></i>
+                    <span>Balochistan Hyperspectral Satellite AI Map (Chagai Sector)</span>
+                  </h3>
+                  <p class="text-xs text-slate-500 mt-0.5">Sentinel-2 & ASTER Shortwave Infrared (SWIR) Alteration Layer</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <button id="toggleHeatmapBtn" onclick="toggleAnomalyLayer()" class="px-3.5 py-2 rounded-xl bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 text-xs font-bold font-mono flex items-center space-x-2 transition shadow-sm">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-600"></span>
+                    <span id="heatmapBtnLabel">Toggle Mineral Heatmap: ON</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Map Container -->
+              <div class="mt-4 relative">
+                <div id="map"></div>
+                <div class="absolute bottom-4 right-4 bg-white/95 backdrop-blur-md p-3.5 rounded-xl border border-slate-200 text-xs font-mono z-[1000] shadow-md space-y-1.5">
+                  <div class="text-slate-800 font-bold mb-1">SPECTRAL ANOMALY LEGEND</div>
+                  <div class="flex items-center space-x-2"><span class="w-3.5 h-3.5 rounded-full bg-red-500"></span><span class="text-slate-700">Copper / Phyllic Gossan (>85%)</span></div>
+                  <div class="flex items-center space-x-2"><span class="w-3.5 h-3.5 rounded-full bg-amber-500"></span><span class="text-slate-700">Argillic Clay Alteration (60-85%)</span></div>
+                  <div class="flex items-center space-x-2"><span class="w-3.5 h-3.5 rounded-full bg-brand-600"></span><span class="text-slate-700">Official Lease Boundary</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
+              <span class="font-mono font-medium">Coordinates: 28.9832° N, 64.4210° E (Chagai, Balochistan)</span>
+              <span class="text-brand-600 font-bold font-mono">3 Anomaly Targets Flagged for Ground Truthing</span>
+            </div>
+          </div>
+
+          <!-- ORE BLENDING CALCULATOR & ACTIVE SITES (Col 3) -->
+          <div class="space-y-6">
+            
+            <!-- AI Blending Optimizer -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 card-shadow">
+              <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                <i data-lucide="sliders" class="w-5 h-5 text-brand-600"></i>
+                <span>AI Ore Blending Optimizer</span>
+              </h3>
+              <p class="text-xs text-slate-500 mt-1">Blend low & high grade piles to hit export spec with 0% waste.</p>
+
+              <div class="mt-5 space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs font-mono font-semibold mb-1.5">
+                    <span class="text-slate-700">Stockpile A (High: 50% Grade)</span>
+                    <span id="sliderAVal" class="text-brand-600 font-black">60%</span>
+                  </div>
+                  <input type="range" id="sliderA" min="0" max="100" value="60" oninput="updateBlendCalc()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600">
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs font-mono font-semibold mb-1.5">
+                    <span class="text-slate-700">Stockpile B (Low: 34% Grade)</span>
+                    <span id="sliderBVal" class="text-sky-600 font-black">40%</span>
+                  </div>
+                  <input type="range" id="sliderB" min="0" max="100" value="40" oninput="updateBlendCalc()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-500">
+                </div>
+
+                <div class="p-4 rounded-xl bg-brand-50 border border-brand-200 text-xs">
+                  <div class="flex items-center justify-between">
+                    <span class="text-slate-700 font-bold">Resulting Blended Grade:</span>
+                    <span id="finalGrade" class="text-lg font-black text-brand-700 font-mono">43.6%</span>
+                  </div>
+                  <div class="mt-2 text-xs font-bold text-emerald-700 flex items-center space-x-1.5">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+                    <span>Export Quality Approved (Karachi Port Spec > 42%)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Fuel Theft Alerts Widget -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 card-shadow">
+              <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                <i data-lucide="shield-alert" class="w-5 h-5 text-red-500"></i>
+                <span>Real-Time Fleet Security Feed</span>
+              </h3>
+              
+              <div class="mt-4 space-y-3">
+                <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-xs">
+                  <div class="flex justify-between font-mono font-black text-red-700">
+                    <span>Dumper-07 (Driver: R. Jamali)</span>
+                    <span>14:32 Today</span>
+                  </div>
+                  <p class="text-slate-700 mt-1 font-medium">Expected 42L diesel based on 3.5 engine hours. Actual: 58L (+38% deviance). Suspected siphon event at North Haul Road.</p>
+                  <button class="mt-3 text-[11px] font-mono font-bold px-2.5 py-1 rounded bg-red-200 text-red-800 hover:bg-red-300">Generate Investigation Log</button>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                  <div class="flex justify-between font-mono font-bold text-slate-700">
+                    <span>Excavator-CAT-330</span>
+                    <span>11:15 Today</span>
+                  </div>
+                  <p class="text-slate-500 mt-1">Fuel consumption normal (19.2 L/hr). Hydraulic pressure optimal.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- WEIGHBRIDGE DISPATCH STREAM (Real-time Table) -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-shadow">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+            <div>
+              <h3 class="text-lg font-black text-slate-900 flex items-center space-x-2">
+                <i data-lucide="file-check-2" class="w-5 h-5 text-brand-600"></i>
+                <span>Live Weighbridge Dispatches & Provincial e-Bilti</span>
+              </h3>
+              <p class="text-xs text-slate-500">Direct scale capture — Zero manual weight manipulation.</p>
+            </div>
+            <button onclick="simulateNewTruck()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center space-x-2 transition shadow-sm">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Simulate Inbound Truck Entry</span>
+            </button>
+          </div>
+
+          <div class="overflow-x-auto mt-4">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="text-slate-500 bg-slate-50 uppercase text-[11px] tracking-wider font-bold">
+                <tr>
+                  <th class="p-3">Ticket #</th>
+                  <th class="p-3">Truck Reg</th>
+                  <th class="p-3">Mineral Type</th>
+                  <th class="p-3">Gross Wt</th>
+                  <th class="p-3">Tare Wt</th>
+                  <th class="p-3">Net Wt</th>
+                  <th class="p-3">Purity Grade</th>
+                  <th class="p-3">Royalty (PKR)</th>
+                  <th class="p-3">Digital Challan</th>
+                </tr>
+              </thead>
+              <tbody id="weighbridgeBody" class="divide-y divide-slate-100 text-slate-800">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: DETAILED SATELLITE EXPLORER -->
+      <div id="content-satellite" class="dash-content hidden space-y-6">
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-shadow">
+          <h2 class="text-xl font-black text-slate-900 flex items-center space-x-2">
+            <i data-lucide="globe" class="w-6 h-6 text-brand-600"></i>
+            <span>Satellite Remote Sensing Target Pipeline (Balochistan)</span>
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">Multi-sensor fusion: Sentinel-2 (10m) + NASA ASTER (SWIR 30m) + SRTM Topography</p>
+
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="text-xs font-mono font-bold text-brand-600">Target #CHG-01 (Active)</span>
+              <h4 class="text-slate-900 font-bold text-base mt-1">Nokkundi North Alteration</h4>
+              <p class="text-xs text-slate-600 mt-2">Phyllic Alteration Index: 2.38 | Clay Ratio: 1.84. High probability of copper porphyry deposit.</p>
+              <div class="mt-4 pt-3 border-t border-slate-200 flex justify-between text-xs font-mono">
+                <span class="text-slate-500">Confidence:</span>
+                <span class="text-emerald-600 font-bold text-sm">92.4%</span>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="text-xs font-mono font-bold text-brand-600">Target #MSB-04</span>
+              <h4 class="text-slate-900 font-bold text-base mt-1">Muslim Bagh Ophiolite Belt</h4>
+              <p class="text-xs text-slate-600 mt-2">Mafic-ultramafic spectral signature with heavy chromite podiform indicators.</p>
+              <div class="mt-4 pt-3 border-t border-slate-200 flex justify-between text-xs font-mono">
+                <span class="text-slate-500">Confidence:</span>
+                <span class="text-emerald-600 font-bold text-sm">88.1%</span>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="text-xs font-mono font-bold text-brand-600">Target #KHZ-12</span>
+              <h4 class="text-slate-900 font-bold text-base mt-1">Khuzdar Barite & Lead-Zinc</h4>
+              <p class="text-xs text-slate-600 mt-2">Hydrothermal vein systems detected via thermal anomaly and structural fault lines.</p>
+              <div class="mt-4 pt-3 border-t border-slate-200 flex justify-between text-xs font-mono">
+                <span class="text-slate-500">Confidence:</span>
+                <span class="text-brand-600 font-bold text-sm">79.5%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: WEIGHBRIDGE EXPANDED -->
+      <div id="content-weighbridge" class="dash-content hidden space-y-6">
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-shadow">
+          <h2 class="text-xl font-black text-slate-900">Digital Dispatch & Royalty Vault</h2>
+          <p class="text-xs text-slate-500 mt-1">All tickets are cryptographically signed and submitted to the provincial database.</p>
+          <div class="mt-6 p-8 border-2 border-dashed border-slate-200 rounded-2xl text-center bg-slate-50">
+            <i data-lucide="qr-code" class="w-14 h-14 text-brand-600 mx-auto mb-3"></i>
+            <h4 class="text-slate-900 font-bold text-base">Provincial Mines Checkpost QR Scanner Ready</h4>
+            <p class="text-slate-600 text-xs max-w-md mx-auto mt-2 leading-relaxed">Mines department officials scan the QR code to verify mineral type, exact truck weight, and prepaid royalty tax without cash exchanges.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: FLEET & FUEL EXPANDED -->
+      <div id="content-fleet" class="dash-content hidden space-y-6">
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 card-shadow">
+          <h2 class="text-xl font-black text-slate-900">Fleet Telemetry & Machine Engine Hours</h2>
+          <div class="mt-6 h-72">
+            <canvas id="fuelChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- 3. MODAL: EXECUTIVE ONE-PAGER PITCH (FOR EVENT/INVESTORS) -->
+  <!-- ========================================================= -->
+  <div id="pitchModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 max-w-2xl w-full rounded-3xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto card-shadow">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold">
+            <i data-lucide="mountain-snow" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-black text-slate-900">OrePulse Pakistan — Executive Summary</h3>
+            <p class="text-xs font-mono font-bold text-brand-600">Confidential Pitch Note for Mining Houses & Investors</p>
+          </div>
+        </div>
+        <button onclick="closePitchModal()" class="text-slate-400 hover:text-slate-800 p-1">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <div class="mt-6 space-y-4 text-xs text-slate-700 leading-relaxed font-sans">
+        
+        <div class="p-4 rounded-2xl bg-brand-50 border border-brand-200">
+          <h4 class="font-bold text-brand-900 uppercase tracking-wider text-xs">The Big Opportunity:</h4>
+          <p class="mt-1.5 text-slate-700">
+            Pakistan possesses an estimated <strong>$6+ Trillion</strong> in mineral reserves (Reko Diq Copper/Gold, Saindak, Muslim Bagh Chromite, Thar Coal). Global demand for Copper and Critical Minerals is skyrocketing due to AI chips, energy storage, and defense manufacturing.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-900 text-sm">The Problem on the Ground:</h4>
+          <ul class="list-disc list-inside mt-1.5 space-y-1 text-slate-600">
+            <li><strong>Blind Exploration:</strong> Exploration relies on slow, costly paper records and trial-and-error drilling.</li>
+            <li><strong>Supply Chain Fraud:</strong> Weighbridge manipulation, inaccurate manual grading, and lack of verified digital challans cause massive revenue loss.</li>
+            <li><strong>Fuel Theft & Inefficiency:</strong> Diesel theft from heavy excavation fleets costs 15-20% of net mine operating margin.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-900 text-sm">Our Solution: OrePulse</h4>
+          <p class="mt-1 text-slate-600">
+            A unified, dual-engine platform combining:
+          </p>
+          <div class="grid grid-cols-2 gap-2 mt-2 font-mono text-[11px]">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-brand-700 font-bold">1. Satellite AI (Space):</span> Free Sentinel-2/ASTER SWIR band analysis mapping alteration zones remotely.
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-blue-700 font-bold">2. Smart Weighbridge (Ground):</span> Direct serial scale capture, QR digital challan & royalty calculation.
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-emerald-700 font-bold">3. Fleet Telemetry AI:</span> Real-time fuel siphon and burn rate anomaly alerts.
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-purple-700 font-bold">4. Ore Grade Control:</span> Computer vision & AI blending to hit export specifications without waste.
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-slate-500 font-mono">Contact: founders@orepulse.pk</span>
+          <button onclick="closePitchModal(); switchView('dashboard')" class="px-5 py-2.5 rounded-xl bg-brand-600 text-white font-bold text-xs hover:bg-brand-700 transition">
+            Test Live Demo
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // VIEW SWITCHER (Landing <-> Dashboard)
+    function switchView(viewName) {
+      const landing = document.getElementById('landingView');
+      const dashboard = document.getElementById('dashboardView');
+      const toggleText = document.getElementById('viewToggleText');
+
+      if (viewName === 'dashboard') {
+        landing.classList.add('hidden');
+        dashboard.classList.remove('hidden');
+        toggleText.innerText = "Back to Overview";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => {
+          if (!mapInitialized) initMap();
+          if (!chartInitialized) initFuelChart();
+        }, 100);
+      } else {
+        dashboard.classList.add('hidden');
+        landing.classList.remove('hidden');
+        toggleText.innerText = "Live Dashboard Demo";
+      }
+    }
+
+    function toggleView() {
+      const isDashboardVisible = !document.getElementById('dashboardView').classList.contains('hidden');
+      switchView(isDashboardVisible ? 'landing' : 'dashboard');
+    }
+
+    function scrollToSection(id) {
+      const elem = document.getElementById(id);
+      if (elem) elem.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // DASHBOARD SUB-TABS
+    function setDashTab(tabId) {
+      document.querySelectorAll('.dash-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.dash-tab').forEach(el => {
+        el.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
+        el.classList.add('text-slate-600');
+      });
+
+      const activeContent = document.getElementById('content-' + tabId);
+      const activeBtn = document.getElementById('tab-' + tabId);
+      if (activeContent) activeContent.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-600');
+      }
+
+      if (tabId === 'fleet' && !chartInitialized) {
+        setTimeout(initFuelChart, 50);
+      }
+    }
+
+    // MODAL
+    function openPitchModal() {
+      document.getElementById('pitchModal').classList.remove('hidden');
+    }
+    function closePitchModal() {
+      document.getElementById('pitchModal').classList.add('hidden');
+    }
+
+    // -------------------------------------------------------------
+    // LEAFLET SATELLITE MAP INITIALIZATION (CHAGAI / BALOCHISTAN)
+    // -------------------------------------------------------------
+    let mapInitialized = false;
+    let map, anomalyLayerGroup;
+    let anomalyVisible = true;
+
+    function initMap() {
+      if (mapInitialized) return;
+      map = L.map('map').setView([28.9832, 64.4210], 9);
+
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Sentinel-2 & ASTER Processing'
+      }).addTo(map);
+
+      anomalyLayerGroup = L.layerGroup().addTo(map);
+
+      const alterationZone1 = L.circle([28.995, 64.410], {
+        color: '#EF4444',
+        fillColor: '#EF4444',
+        fillOpacity: 0.55,
+        radius: 3500
+      }).bindPopup("<b>Target Zone #1 (Chagai Porphyry)</b><br>Phyllic Alteration Detected.<br>SWIR B11/B12 Ratio: 2.45<br>Confidence: 91.2%");
+
+      const alterationZone2 = L.circle([29.080, 64.550], {
+        color: '#F59E0B',
+        fillColor: '#F59E0B',
+        fillOpacity: 0.45,
+        radius: 2800
+      }).bindPopup("<b>Target Zone #2 (Argillic Clay)</b><br>Kaolinite/Alunite Anomaly.<br>Confidence: 84.6%");
+
+      const leasePolygon = L.polygon([
+        [28.92, 64.35],
+        [29.05, 64.35],
+        [29.05, 64.50],
+        [28.92, 64.50]
+      ], {
+        color: '#0284C7',
+        fillColor: '#0284C7',
+        fillOpacity: 0.15,
+        weight: 2,
+        dashArray: '5, 5'
+      }).bindPopup("<b>Official Lease Boundary #BL-CHG-2026</b><br>Geofence Active (No Illegal Encroachment)");
+
+      anomalyLayerGroup.addLayer(alterationZone1);
+      anomalyLayerGroup.addLayer(alterationZone2);
+      anomalyLayerGroup.addLayer(leasePolygon);
+
+      L.marker([28.9832, 64.4210]).addTo(map)
+        .bindPopup("<b>Central Weighbridge & Camp #01</b><br>Live Stream Online").openPopup();
+
+      mapInitialized = true;
+    }
+
+    function toggleAnomalyLayer() {
+      if (!map) return;
+      const btn = document.getElementById('heatmapBtnLabel');
+      if (anomalyVisible) {
+        map.removeLayer(anomalyLayerGroup);
+        anomalyVisible = false;
+        btn.innerText = "Toggle Mineral Heatmap: OFF";
+      } else {
+        map.addLayer(anomalyLayerGroup);
+        anomalyVisible = true;
+        btn.innerText = "Toggle Mineral Heatmap: ON";
+      }
+    }
+
+    // -------------------------------------------------------------
+    // WEIGHBRIDGE SIMULATOR DATA
+    // -------------------------------------------------------------
+    const sampleTrucks = [
+      { id: "TKT-8841", reg: "BL-JU-4891", mineral: "Copper Ore", gross: 48.20, tare: 14.10, grade: "44.2%", royalty: 17050 },
+      { id: "TKT-8840", reg: "LSE-3021", mineral: "Chromite (High)", gross: 42.80, tare: 13.90, grade: "48.5%", royalty: 28900 },
+      { id: "TKT-8839", reg: "KHI-9912", mineral: "Copper Ore", gross: 51.10, tare: 15.00, grade: "41.8%", royalty: 18050 },
+      { id: "TKT-8838", reg: "P-4401-QU", mineral: "Barite", gross: 39.50, tare: 12.80, grade: "89.0%", royalty: 13350 },
+      { id: "TKT-8837", reg: "LES-7182", mineral: "Chromite", gross: 44.00, tare: 14.20, grade: "43.1%", royalty: 29800 }
+    ];
+
+    function renderWeighbridgeTable() {
+      const tbody = document.getElementById('weighbridgeBody');
+      tbody.innerHTML = "";
+      sampleTrucks.forEach(t => {
+        const net = (t.gross - t.tare).toFixed(2);
+        const row = document.createElement('tr');
+        row.className = "hover:bg-slate-50 transition";
+        row.innerHTML = `
+          <td class="p-3 text-brand-700 font-bold">${t.id}</td>
+          <td class="p-3 text-slate-900 font-semibold">${t.reg}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">${t.mineral}</span></td>
+          <td class="p-3 font-medium">${t.gross.toFixed(2)} T</td>
+          <td class="p-3 text-slate-500">${t.tare.toFixed(2)} T</td>
+          <td class="p-3 text-emerald-700 font-bold">${net} T</td>
+          <td class="p-3 text-brand-600 font-bold">${t.grade}</td>
+          <td class="p-3 font-mono">PKR ${t.royalty.toLocaleString()}</td>
+          <td class="p-3">
+            <span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold cursor-pointer hover:bg-emerald-100">
+              <i data-lucide="qr-code" class="w-3.5 h-3.5"></i>
+              <span>Verified e-Challan</span>
+            </span>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+      lucide.createIcons();
+    }
+
+    function simulateNewTruck() {
+      const truckId = "TKT-" + Math.floor(8842 + Math.random() * 50);
+      const randomGross = (40 + Math.random() * 15).toFixed(2);
+      const randomTare = (13 + Math.random() * 3).toFixed(2);
+      const newEntry = {
+        id: truckId,
+        reg: "BL-TGT-" + Math.floor(1000 + Math.random() * 9000),
+        mineral: Math.random() > 0.5 ? "Copper Ore" : "Chromite",
+        gross: parseFloat(randomGross),
+        tare: parseFloat(randomTare),
+        grade: (41 + Math.random() * 7).toFixed(1) + "%",
+        royalty: Math.floor(15000 + Math.random() * 14000)
+      };
+      sampleTrucks.unshift(newEntry);
+      if (sampleTrucks.length > 7) sampleTrucks.pop();
+      renderWeighbridgeTable();
+    }
+
+    // ORE BLENDING SLIDER CALCULATOR
+    function updateBlendCalc() {
+      const a = parseInt(document.getElementById('sliderA').value);
+      const b = 100 - a;
+      document.getElementById('sliderB').value = b;
+      document.getElementById('sliderAVal').innerText = a + "%";
+      document.getElementById('sliderBVal').innerText = b + "%";
+
+      const blended = ((a * 50.0 + b * 34.0) / 100).toFixed(1);
+      document.getElementById('finalGrade').innerText = blended + "%";
+    }
+
+    // FLEET FUEL CHART (CHART.JS)
+    let chartInitialized = false;
+    function initFuelChart() {
+      const ctx = document.getElementById('fuelChart');
+      if (!ctx || chartInitialized) return;
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Dumper-01', 'Dumper-02', 'Dumper-03', 'Dumper-04', 'Dumper-05', 'Dumper-06', 'Dumper-07 (Spike)'],
+          datasets: [
+            {
+              label: 'Expected Diesel Consumption (Liters)',
+              data: [42, 38, 45, 40, 44, 39, 41],
+              backgroundColor: '#BAE6FD',
+              borderColor: '#0284C7',
+              borderWidth: 1.5
+            },
+            {
+              label: 'Actual Dispensed Diesel (Liters)',
+              data: [43, 37, 46, 41, 45, 38, 59],
+              backgroundColor: ['#A7F3D0', '#A7F3D0', '#A7F3D0', '#A7F3D0', '#A7F3D0', '#A7F3D0', '#FCA5A5'],
+              borderColor: ['#059669', '#059669', '#059669', '#059669', '#059669', '#059669', '#DC2626'],
+              borderWidth: 1.5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#334155', font: { family: 'Inter', weight: 'bold', size: 12 } } },
+            tooltip: {
+              callbacks: {
+                afterBody: function(context) {
+                  if (context[0].label.includes('07')) {
+                    return '⚠️ ANOMALY DETECTED: +43.9% Excess Fuel Siphoned!';
+                  }
+                }
+              }
+            }
+          },
+          scales: {
+            y: { grid: { color: '#E2E8F0' }, ticks: { color: '#64748B', font: { family: 'JetBrains Mono' } } },
+            x: { grid: { color: '#E2E8F0' }, ticks: { color: '#64748B', font: { family: 'JetBrains Mono' } } }
+          }
+        }
+      });
+      chartInitialized = true;
+    }
+
+    renderWeighbridgeTable();
+  </script>
+</body>
+</html>

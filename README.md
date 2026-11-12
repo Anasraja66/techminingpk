@@ -1,4 +1,4 @@
-# MiningOS — Pakistan's 1st Deep-Tech Exploration & Mining ERP Platform
+# TechMining PK — Pakistan's 1st Deep-Tech Exploration & Mining ERP Platform
 
 An end-to-end Mining Intelligence and Operations platform designed for Pakistan's critical minerals (Copper, Chromite, Gold, Barite, Coal) in **Balochistan (Chagai / Reko Diq / Muslim Bagh)** and **Khyber Pakhtunkhwa**.
 

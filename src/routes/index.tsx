@@ -14,9 +14,7 @@ import {
   PlayCircle,
   Sparkles,
   Radar,
-  Scale,
   Ship,
-  Truck,
   Wrench,
 } from "lucide-react";
 

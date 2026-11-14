@@ -14,6 +14,7 @@ import { Route as AdvisorRouteImport } from './routes/advisor'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DeepTechRouteImport } from './routes/deep-tech'
 import { Route as MineralsRouteImport } from './routes/minerals'
+import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ResearchRouteImport } from './routes/research'
 import { Route as SolutionsRouteImport } from './routes/solutions'
@@ -43,6 +44,11 @@ const MineralsRoute = MineralsRouteImport.update({
   path: '/minerals',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/deep-tech': typeof DeepTechRoute
   '/minerals': typeof MineralsRoute
+  '/partners': typeof PartnersRoute
   '/pricing': typeof PricingRoute
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/deep-tech': typeof DeepTechRoute
   '/minerals': typeof MineralsRoute
+  '/partners': typeof PartnersRoute
   '/pricing': typeof PricingRoute
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/deep-tech': typeof DeepTechRoute
   '/minerals': typeof MineralsRoute
+  '/partners': typeof PartnersRoute
   '/pricing': typeof PricingRoute
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/deep-tech'
     | '/minerals'
+    | '/partners'
     | '/pricing'
     | '/research'
     | '/solutions'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/deep-tech'
     | '/minerals'
+    | '/partners'
     | '/pricing'
     | '/research'
     | '/solutions'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/deep-tech'
     | '/minerals'
+    | '/partners'
     | '/pricing'
     | '/research'
     | '/solutions'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DeepTechRoute: typeof DeepTechRoute
   MineralsRoute: typeof MineralsRoute
+  PartnersRoute: typeof PartnersRoute
   PricingRoute: typeof PricingRoute
   ResearchRoute: typeof ResearchRoute
   SolutionsRoute: typeof SolutionsRoute
@@ -171,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MineralsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DeepTechRoute: DeepTechRoute,
   MineralsRoute: MineralsRoute,
+  PartnersRoute: PartnersRoute,
   PricingRoute: PricingRoute,
   ResearchRoute: ResearchRoute,
   SolutionsRoute: SolutionsRoute,

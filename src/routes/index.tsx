@@ -4,6 +4,8 @@ import {
   ArrowUpRight,
   Building2,
   Check,
+  Code2,
+  Database,
   ClipboardCheck,
   Gem,
   Landmark,
@@ -20,8 +22,8 @@ import {
 
 import heroImg from "@/assets/hero-mine.jpg";
 import satelliteImg from "@/assets/card-satellite.jpg";
-import weighbridgeImg from "@/assets/card-weighbridge.jpg";
-import fleetImg from "@/assets/card-fleet.jpg";
+import gspImg from "@/assets/card-gsp-data.jpg";
+import partnerApiImg from "@/assets/card-partner-api.jpg";
 import oreGradeImg from "@/assets/card-ore-grade.jpg";
 import { Button } from "@/components/ui/button";
 import { CtaBand } from "@/components/site/CtaBand";
@@ -37,13 +39,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "TechMining.pk gives Pakistani mines satellite mineral exploration, tamper-proof digital weighbridge challans, diesel theft alerts and ore grade control — installed on site, run from one dashboard.",
+          "TechMining.pk ranks drill targets inside your concession using ESA Sentinel-2 and NASA ASTER satellite data fused with Geological Survey of Pakistan ground truth — plus ore grade reports and a partner API.",
       },
       { property: "og:title", content: "TechMining.pk — Mining Technology for Pakistan's Mines" },
       {
         property: "og:description",
         content:
-          "Find minerals from space, stop weight fraud and diesel theft, and ship the right ore grade. Built for Balochistan, KP and GB.",
+          "Satellite AI exploration with GSP ground truth, ore grade reports and a partner API — for Balochistan, KP and GB concessions.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -54,9 +56,9 @@ export const Route = createFileRoute("/")({
 
 const DELIVERABLES = [
   "Satellite maps of where to drill",
-  "Digital weighbridge with QR challan",
-  "Diesel theft alerts on WhatsApp",
   "Ore grade & blend reports for export",
+  "GSP-integrated ground truth layer",
+  "Partner API for your platform",
 ];
 
 const SERVICES: Service[] = [
@@ -73,25 +75,25 @@ const SERVICES: Service[] = [
   },
   {
     n: "02",
-    tag: "Core ERP",
-    image: weighbridgeImg,
-    imageAlt: "Loaded ore truck standing on a weighbridge at a mine gate",
-    caption: "Zero weight tampering",
-    captionIcon: Scale,
-    title: "Smart Weighbridge & Bilti",
-    body: "Your scale sends tare and gross weight straight to the system — nobody types a number. A QR-verified digital bilti prints at the gate, ending checkpost and royalty fraud.",
-    outcome: "Mines Dept. regulatory ready",
+    tag: "Local Advantage",
+    image: gspImg,
+    imageAlt: "Geologist reviewing a printed geological survey map of Balochistan beside rock samples",
+    caption: "Government ground truth",
+    captionIcon: Database,
+    title: "GSP Data Integration",
+    body: "We fuse Geological Survey of Pakistan's verified mineral occurrence data with live satellite spectral analysis — giving your targets a government-confirmed ground truth layer no foreign company can replicate.",
+    outcome: "Verified GSP occurrence match",
   },
   {
     n: "03",
-    tag: "Predictive AI",
-    image: fleetImg,
-    imageAlt: "Excavator loading rock into a dump truck on an open-pit bench",
-    caption: "Anti-theft telemetry",
-    captionIcon: Truck,
-    title: "Fleet & Fuel Loss AI",
-    body: "Sensors on excavators and dumpers match every litre of diesel to engine hours and trips. If fuel is siphoned, you get a WhatsApp alert and a dashboard flag within minutes.",
-    outcome: "Saves $10k+ / month per site",
+    tag: "Open Platform",
+    image: partnerApiImg,
+    imageAlt: "Laptop and monitor showing a GIS map with mineral anomaly points over mountains",
+    caption: "REST API · GeoJSON",
+    captionIcon: Code2,
+    title: "Partner API & Data Layer",
+    body: "Mining companies, consultancies and JV partners connect directly to our mineral intelligence layer via API. Pull ranked anomaly data, spectral signatures and drill-target coordinates into your own platform or dashboard.",
+    outcome: "For partners & platforms",
   },
   {
     n: "04",
@@ -108,9 +110,9 @@ const SERVICES: Service[] = [
 
 const STATS = [
   { value: "70%", label: "Shorter exploration lead time" },
-  { value: "100%", label: "Machine-captured weighbridge entries" },
-  { value: "15–20%", label: "Fuel cost recovered from theft" },
-  { value: "< 2 min", label: "Alert time on WhatsApp" },
+  { value: "90%+", label: "Mineral anomaly detection accuracy (Sentinel-2 SWIR)" },
+  { value: "3–5x", label: "ROI vs traditional airborne surveys" },
+  { value: "48 hrs", label: "From coordinates to ranked drill-target report" },
 ];
 
 const STEPS = [
@@ -152,9 +154,9 @@ function Index() {
             We help Pakistan's mines <span className="text-primary">find more ore and lose less money.</span>
           </h1>
           <p className="mt-6 max-w-xl type-body-lg text-muted-foreground">
-            TechMining installs software and site hardware that track your mine from exploration to
-            export — so every tonne, every litre of diesel and every challan is recorded and
-            verified.
+            We analyse ESA Sentinel-2 and NASA ASTER satellite data, fused with GSP's verified
+            ground-truth mineral maps, to rank exact drill targets inside your concession — before
+            you spend on a single hole.
           </p>
 
           <ul className="mt-6 grid max-w-xl gap-2.5 sm:grid-cols-2">
@@ -192,14 +194,14 @@ function Index() {
           />
           <div className="absolute -bottom-6 left-4 right-4 flex items-center gap-3 rounded-[16px] bg-surface-lowest p-3 shadow-elev-2 sm:left-6 sm:right-auto sm:max-w-sm">
             <span className="grid size-11 shrink-0 place-items-center rounded-[12px] bg-primary-container text-on-primary-container">
-              <Scale className="size-5" />
+              <Radar className="size-5" />
             </span>
             <div className="min-w-0">
-              <p className="type-label-sm uppercase text-muted-foreground">Challan #BL-24-018832</p>
-              <p className="truncate type-title-md">QTA-4471 · 27.72 t Chromite</p>
+              <p className="type-label-sm uppercase text-muted-foreground">Drill target #04 · Chagai</p>
+              <p className="truncate type-title-md">Cu-Au alteration · GSP match</p>
             </div>
             <span className="ml-auto rounded-sm bg-success-container px-2 py-0.5 type-label-sm text-on-success-container">
-              Verified
+              High
             </span>
           </div>
         </div>
@@ -229,6 +231,13 @@ function Index() {
               <ServiceCard key={s.n} s={s} />
             ))}
           </div>
+
+          <p className="mt-5 type-body-md text-muted-foreground">
+            Need weighbridge, fleet telemetry or digital challan systems?{" "}
+            <Link to="/contact" className="text-primary hover:underline">
+              Ask about our Custom Enterprise ERP solutions →
+            </Link>
+          </p>
 
           <div className="mt-8 flex flex-col gap-4 rounded-[16px] border border-outline-variant bg-surface-lowest p-5 sm:flex-row sm:items-center sm:p-6">
             <span className="grid size-12 shrink-0 place-items-center rounded-[12px] bg-primary-container text-on-primary-container">

@@ -40,7 +40,7 @@ type Tier = {
 
 const TIERS: Tier[] = [
   {
-    tier: "Partner API",
+    tier: "For platforms",
     name: "Partner API",
     price: "From $500 / month",
     billing: "Monthly subscription",
@@ -91,12 +91,12 @@ function Pricing() {
                 <span className="font-mono text-[13px] opacity-75">{t.tier}</span>
                 {t.featured && (
                   <span className="rounded-sm bg-primary px-2 py-0.5 type-label-sm text-primary-foreground">
-                    For platforms
+                    New
                   </span>
                 )}
               </div>
               <h2 className="mt-4 type-headline-sm">{t.name}</h2>
-              {t.price && <p className="mt-3 type-headline-md">{t.price}</p>}
+              {t.price && <p className="mt-3 type-headline-lg">{t.price}</p>}
               <p className="mt-1 type-label-lg text-primary">{t.billing}</p>
               <p className={cn("mt-4 type-body-md", !t.featured && "text-muted-foreground")}>{t.body}</p>
               <ul className="mt-6 flex-1 space-y-3 border-t border-outline-variant pt-6">

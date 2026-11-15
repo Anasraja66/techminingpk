@@ -182,7 +182,7 @@ function Index() {
             </Button>
           </div>
 
-          <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 type-label-md text-muted-foreground">
+          <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 type-label-lg text-muted-foreground">
             <span className="type-label-sm uppercase">Data sources</span>
             <span className="font-mono text-[12.5px] text-foreground">ESA Sentinel-2</span>
             <span aria-hidden="true">·</span>

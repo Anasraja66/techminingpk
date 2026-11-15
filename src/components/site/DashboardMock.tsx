@@ -1,29 +1,65 @@
-import { AlertTriangle, BadgeCheck, Fuel, Radar, Scale, Satellite } from "lucide-react";
+import { useState } from "react";
+import { BadgeCheck, Crosshair, Layers, ListOrdered, Navigation, Radar, Satellite, Waves } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { MAP_H, MAP_W, PROVINCES, project } from "@/components/site/pakistanMap";
 
-const HOTSPOTS = [
-  { name: "Reko Diq", x: 18, y: 30, level: "high", note: "Phyllic alteration · 0.91" },
-  { name: "Saindak", x: 9, y: 42, level: "high", note: "Argillic · 0.84" },
-  { name: "Chagai Hills", x: 30, y: 22, level: "mid", note: "Propylitic · 0.67" },
-  { name: "Muslim Bagh", x: 72, y: 34, level: "mid", note: "Serpentinite · 0.72" },
-  { name: "Lasbela", x: 62, y: 80, level: "mid", note: "Ophiolite · 0.63" },
+/** Sample anomaly targets at real deposit locations (illustrative scores). */
+const TARGETS = [
+  { id: "T-01", name: "Reko Diq NW", lon: 62.1, lat: 29.13, mineral: "Cu-Au porphyry", alteration: "Phyllic", score: 0.92, gsp: true, feature: 2.2, depth: 0.34 },
+  { id: "T-02", name: "Saindak East", lon: 61.62, lat: 29.27, mineral: "Cu-Au", alteration: "Argillic", score: 0.86, gsp: true, feature: 2.17, depth: 0.29 },
+  { id: "T-03", name: "Muslim Bagh", lon: 67.73, lat: 30.83, mineral: "Chromite", alteration: "Serpentinite", score: 0.81, gsp: true, feature: 2.32, depth: 0.27 },
+  { id: "T-04", name: "Chagai Hills", lon: 64.3, lat: 29.0, mineral: "Cu-Mo", alteration: "Propylitic", score: 0.74, gsp: false, feature: 2.33, depth: 0.2 },
+  { id: "T-05", name: "Gunga, Khuzdar", lon: 66.65, lat: 27.95, mineral: "Barite-Zn", alteration: "Gossan / Fe-oxide", score: 0.69, gsp: true, feature: 0.9, depth: 0.22 },
 ] as const;
 
-const WEIGHINGS = [
-  { plate: "QTA-4471", mineral: "Chromite", gross: 41.82, tare: 14.1, time: "11:02" },
-  { plate: "ZHB-0918", mineral: "Chromite", gross: 39.6, tare: 13.85, time: "10:47" },
-  { plate: "CGI-2203", mineral: "Cu conc.", gross: 44.18, tare: 15.02, time: "10:31" },
+/** Lower-priority occurrences shown as small dots. */
+const OCCURRENCES = [
+  { name: "Bela ophiolite", lon: 66.35, lat: 26.2 },
+  { name: "Boya, N. Waziristan", lon: 70.05, lat: 32.95 },
+  { name: "Swat emerald belt", lon: 72.36, lat: 34.78 },
+  { name: "Chitral antimony", lon: 71.78, lat: 35.85 },
+  { name: "Hunza gem belt", lon: 74.65, lat: 36.32 },
+  { name: "Zhob ophiolite", lon: 69.3, lat: 31.35 },
+  { name: "Nokkundi iron", lon: 62.75, lat: 28.82 },
+  { name: "Dasht-e-Kain", lon: 63.4, lat: 29.35 },
 ];
 
-const FLEET = [
-  { unit: "EX-02", pct: 58 },
-  { unit: "DMP-03", pct: 64 },
-  { unit: "DMP-05", pct: 61 },
-  { unit: "DMP-07", pct: 88, flag: true },
-  { unit: "DMP-09", pct: 60 },
-  { unit: "LDR-01", pct: 52 },
+const PROVINCE_LABELS = [
+  { name: "BALOCHISTAN", lon: 65.2, lat: 27.4 },
+  { name: "SINDH", lon: 68.6, lat: 25.9 },
+  { name: "PUNJAB", lon: 72.3, lat: 30.6 },
+  { name: "KP", lon: 71.2, lat: 33.9 },
+  { name: "GILGIT-BALTISTAN", lon: 74.6, lat: 35.6 },
 ];
+
+const LAYERS = ["Sentinel-2 SWIR", "ASTER TIR", "GSP occurrences"];
+
+const KPIS = [
+  { label: "Scenes processed", value: "1,284" },
+  { label: "Anomalies flagged", value: "37" },
+  { label: "GSP-confirmed", value: "21" },
+  { label: "Area screened", value: "12,460 km²" },
+];
+
+function pct(lon: number, lat: number) {
+  const [x, y] = project(lon, lat);
+  return { left: `${(x / MAP_W) * 100}%`, top: `${(y / MAP_H) * 100}%` };
+}
+
+/** Deterministic SWIR-style reflectance curve with one diagnostic absorption. */
+function spectrum(feature: number, depth: number, w = 300, h = 120) {
+  const pts: string[] = [];
+  for (let i = 0; i <= 60; i++) {
+    const wl = 0.4 + (i / 60) * 2.1;
+    const continuum = 0.18 + 0.32 * (1 - Math.exp(-(wl - 0.35) * 1.6));
+    const absorb = depth * Math.exp(-((wl - feature) ** 2) / (2 * 0.035 ** 2));
+    const water = 0.08 * Math.exp(-((wl - 1.92) ** 2) / (2 * 0.05 ** 2));
+    const r = continuum * (1 - absorb) - water;
+    pts.push(`${((i / 60) * w).toFixed(1)},${(h - r * h * 1.6).toFixed(1)}`);
+  }
+  return pts.join(" ");
+}
 
 function Panel({
   icon: Icon,
@@ -41,9 +77,9 @@ function Panel({
   return (
     <div className={cn("flex min-w-0 flex-col rounded-[16px] bg-surface-lowest p-4", className)}>
       <div className="mb-3 flex items-center gap-2">
-        <Icon className="size-4 text-primary" />
+        <Icon className="size-4 shrink-0 text-primary" />
         <p className="type-title-md text-[14px]">{title}</p>
-        {meta && <span className="ml-auto hidden type-label-sm text-muted-foreground sm:inline">{meta}</span>}
+        {meta && <span className="ml-auto hidden truncate type-label-sm text-muted-foreground sm:inline">{meta}</span>}
       </div>
       {children}
     </div>
@@ -51,6 +87,9 @@ function Panel({
 }
 
 export function DashboardMock() {
+  const [activeId, setActiveId] = useState<string>(TARGETS[0].id);
+  const active = TARGETS.find((t) => t.id === activeId) ?? TARGETS[0];
+
   return (
     <div className="rounded-[28px] border border-outline-variant bg-surface p-3 shadow-elev-3 sm:p-4">
       {/* window bar */}
@@ -60,128 +99,245 @@ export function DashboardMock() {
           <span className="size-2.5 rounded-full bg-outline-variant" />
           <span className="size-2.5 rounded-full bg-outline-variant" />
         </div>
-        <p className="min-w-0 truncate font-mono text-[12px] text-muted-foreground">techmining.pk / control-room / balochistan</p>
-        <span className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-success-container px-2.5 py-0.5 type-label-sm text-on-success-container">
+        <p className="min-w-0 truncate font-mono text-[12px] text-muted-foreground">
+          techmining.pk / exploration / pakistan
+        </p>
+        <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full bg-success-container px-2.5 py-0.5 type-label-sm text-on-success-container">
           <span className="size-1.5 rounded-full bg-success" /> Live
         </span>
       </div>
 
-      <div className="grid gap-3 lg:grid-cols-5">
+      {/* KPI strip */}
+      <dl className="mb-3 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {KPIS.map((k) => (
+          <div key={k.label} className="rounded-[16px] bg-surface-lowest px-4 py-3">
+            <dt className="type-label-sm uppercase text-muted-foreground">{k.label}</dt>
+            <dd className="mt-1 font-mono text-[20px] font-medium text-foreground">{k.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div className="grid gap-3 lg:grid-cols-12">
         {/* Map */}
-        <Panel icon={Satellite} title="Alteration anomalies" meta="Sentinel-2 · ASTER SWIR" className="lg:col-span-3">
-          <div className="topo-grid relative aspect-[16/10] overflow-hidden rounded-[12px]">
-            <svg viewBox="0 0 100 62" preserveAspectRatio="none" className="absolute inset-0 size-full" aria-hidden="true">
-              <path
-                d="M2 30 C8 18 20 10 34 12 S52 4 64 10 S84 14 94 24 S98 44 88 52 S70 60 56 58 S30 60 18 54 S0 42 2 30Z"
-                className="fill-surface-lowest/70 stroke-primary/40"
-                strokeWidth="0.4"
-                strokeDasharray="1.2 0.8"
-              />
-              {[0, 1, 2, 3].map((i) => (
-                <path
-                  key={i}
-                  d={`M${10 + i * 4} ${36 - i * 3} C${24 + i * 2} ${22 - i * 2} ${44} ${26 - i * 3} ${60 - i * 2} ${22 + i} S${82 - i * 3} ${30 - i} ${86 - i * 4} ${42 - i * 2}`}
-                  className="fill-none stroke-primary/20"
-                  strokeWidth="0.35"
+        <Panel icon={Satellite} title="Mineral anomaly map" meta="Sentinel-2 · ASTER · GSP" className="lg:col-span-7">
+          <div className="mb-3 flex flex-wrap gap-2">
+            {LAYERS.map((l) => (
+              <span
+                key={l}
+                className="inline-flex items-center gap-1.5 rounded-sm border border-outline-variant bg-secondary px-2.5 py-1 type-label-sm text-secondary-foreground"
+              >
+                <Layers className="size-3" /> {l}
+              </span>
+            ))}
+          </div>
+
+          <div className="relative overflow-hidden rounded-[12px] border border-outline-variant bg-surface-low">
+            <div className="relative aspect-[1000/916] w-full">
+              <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} className="absolute inset-0 size-full" aria-hidden="true">
+                {/* graticule */}
+                {[62, 64, 66, 68, 70, 72, 74, 76].map((lon) => {
+                  const [x] = project(lon, 30);
+                  return <line key={`lon${lon}`} x1={x} x2={x} y1={0} y2={MAP_H} className="stroke-outline-variant" strokeWidth={1} strokeDasharray="4 6" />;
+                })}
+                {[24, 26, 28, 30, 32, 34, 36].map((lat) => {
+                  const [, y] = project(65, lat);
+                  return <line key={`lat${lat}`} x1={0} x2={MAP_W} y1={y} y2={y} className="stroke-outline-variant" strokeWidth={1} strokeDasharray="4 6" />;
+                })}
+                {PROVINCES.map((p) => (
+                  <path
+                    key={p.name}
+                    d={p.d}
+                    className={cn(
+                      "stroke-primary/50",
+                      p.name === "Balochistan" ? "fill-primary-container" : "fill-surface-lowest",
+                    )}
+                    strokeWidth={1.6}
+                    strokeLinejoin="round"
+                  />
+                ))}
+                {/* survey footprint around active target */}
+                {(() => {
+                  const [x, y] = project(active.lon, active.lat);
+                  return (
+                    <g>
+                      <circle cx={x} cy={y} r={70} className="fill-anomaly/10 stroke-anomaly/60" strokeWidth={1.5} strokeDasharray="6 5" />
+                      <line x1={x - 90} x2={x + 90} y1={y} y2={y} className="stroke-anomaly/40" strokeWidth={1} />
+                      <line x1={x} x2={x} y1={y - 90} y2={y + 90} className="stroke-anomaly/40" strokeWidth={1} />
+                    </g>
+                  );
+                })()}
+                {PROVINCE_LABELS.map((l) => {
+                  const [x, y] = project(l.lon, l.lat);
+                  return (
+                    <text
+                      key={l.name}
+                      x={x}
+                      y={y}
+                      textAnchor="middle"
+                      className="hidden fill-muted-foreground font-mono sm:block"
+                      style={{ fontSize: 19, letterSpacing: 3 }}
+                    >
+                      {l.name}
+                    </text>
+                  );
+                })}
+                {/* scale bar: ~200 km */}
+                {(() => {
+                  const [x0] = project(72.6, 24);
+                  const [x1] = project(72.6 + 200 / (111 * Math.cos((30 * Math.PI) / 180)), 24);
+                  const y = MAP_H - 40;
+                  return (
+                    <g className="hidden sm:block">
+                      <line x1={x0} x2={x1} y1={y} y2={y} className="stroke-foreground" strokeWidth={3} />
+                      <line x1={x0} x2={x0} y1={y - 8} y2={y + 2} className="stroke-foreground" strokeWidth={3} />
+                      <line x1={x1} x2={x1} y1={y - 8} y2={y + 2} className="stroke-foreground" strokeWidth={3} />
+                      <text x={(x0 + x1) / 2} y={y - 14} textAnchor="middle" className="fill-foreground font-mono" style={{ fontSize: 18 }}>
+                        200 km
+                      </text>
+                    </g>
+                  );
+                })()}
+              </svg>
+
+              {OCCURRENCES.map((o) => (
+                <span
+                  key={o.name}
+                  title={o.name}
+                  className="absolute size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-surface-lowest bg-warning"
+                  style={pct(o.lon, o.lat)}
                 />
               ))}
-            </svg>
-            {HOTSPOTS.map((h) => (
-              <div
-                key={h.name}
-                className="group absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${h.x}%`, top: `${h.y}%` }}
-              >
-                <span
-                  className={cn(
-                    "absolute inset-0 rounded-full animate-ping-soft",
-                    h.level === "high" ? "bg-anomaly" : "bg-warning",
-                  )}
-                />
-                <span
-                  className={cn(
-                    "relative block size-3 rounded-full border-2 border-surface-lowest",
-                    h.level === "high" ? "bg-anomaly" : "bg-warning",
-                  )}
-                />
-                <span className="absolute left-4 top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-sm bg-inverse-surface px-2 py-1 font-mono text-[10px] text-inverse-on-surface sm:block">
-                  {h.name}
-                  <span className="hidden opacity-70 group-hover:inline"> · {h.note}</span>
-                </span>
+
+              {TARGETS.map((t) => {
+                const isActive = t.id === active.id;
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setActiveId(t.id)}
+                    aria-label={`${t.id} ${t.name}, score ${t.score}`}
+                    className="group absolute -translate-x-1/2 -translate-y-1/2 p-1.5"
+                    style={pct(t.lon, t.lat)}
+                  >
+                    {isActive && <span className="absolute inset-1.5 rounded-full bg-anomaly animate-ping-soft" />}
+                    <span
+                      className={cn(
+                        "relative block rounded-full border-2 border-surface-lowest shadow-elev-1 transition-transform group-hover:scale-125",
+                        isActive ? "size-3.5 bg-anomaly" : "size-3 bg-anomaly/80",
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "pointer-events-none absolute left-6 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-sm px-1.5 py-0.5 font-mono text-[10px]",
+                        isActive ? "bg-inverse-surface text-inverse-on-surface" : "hidden bg-surface-lowest text-foreground shadow-elev-1 group-hover:block",
+                      )}
+                    >
+                      {t.id}
+                    </span>
+                  </button>
+                );
+              })}
+
+              {/* active target callout (top-left = Afghanistan side, empty) */}
+              <div className="absolute left-2 top-2 max-w-[60%] rounded-[12px] bg-surface-lowest/95 p-2.5 shadow-elev-2 sm:left-3 sm:top-3 sm:p-3">
+                <p className="flex items-center gap-1.5 type-label-sm uppercase text-muted-foreground">
+                  <Crosshair className="size-3 text-anomaly" /> {active.id} · Selected
+                </p>
+                <p className="mt-0.5 truncate type-title-md text-[14px]">{active.name}</p>
+                <p className="hidden font-mono text-[11px] text-muted-foreground sm:block">
+                  {active.lat.toFixed(2)}°N {active.lon.toFixed(2)}°E
+                </p>
+                <p className="mt-1 type-body-md text-[12px] text-foreground">
+                  {active.mineral} · {active.alteration}
+                </p>
               </div>
-            ))}
-            <div className="absolute bottom-2 left-2 flex gap-3 rounded-sm bg-surface-lowest/90 px-2 py-1 type-label-sm text-muted-foreground">
-              <span className="flex items-center gap-1"><span className="size-2 rounded-full bg-anomaly" /> High</span>
-              <span className="flex items-center gap-1"><span className="size-2 rounded-full bg-warning" /> Moderate</span>
+
+              {/* legend + north arrow (bottom-right = empty corner) */}
+              <div className="absolute right-2 bottom-2 hidden flex-col gap-1 rounded-sm bg-surface-lowest/95 px-2.5 py-2 type-label-sm text-muted-foreground shadow-elev-1 sm:flex">
+                <span className="flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-anomaly" /> Ranked target</span>
+                <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-warning" /> Known occurrence</span>
+                <span className="flex items-center gap-1.5"><span className="size-2.5 rounded-[3px] bg-primary-container ring-1 ring-primary/50" /> Focus province</span>
+              </div>
+              <div className="absolute right-3 top-3 grid size-8 place-items-center rounded-full bg-surface-lowest/95 text-foreground shadow-elev-1">
+                <Navigation className="size-4 -rotate-45 fill-current" />
+              </div>
             </div>
           </div>
+          <p className="mt-2 type-label-sm text-muted-foreground">Boundaries: geoBoundaries (CC BY 4.0). Scores shown are sample values.</p>
         </Panel>
 
-        {/* Fleet */}
-        <Panel icon={Fuel} title="Fuel burn vs. engine hours" meta="Shift B" className="lg:col-span-2">
-          <div className="flex flex-1 items-end gap-2 pt-2" style={{ minHeight: 150 }}>
-            {FLEET.map((f) => (
-              <div key={f.unit} className="flex flex-1 flex-col items-center gap-1.5">
-                {f.flag && (
-                  <span className="rounded-sm bg-destructive px-1 font-mono text-[10px] text-destructive-foreground">+25%</span>
-                )}
-                <div className="flex h-28 w-full items-end rounded-t-[6px] bg-surface">
-                  <div
-                    className={cn("w-full rounded-t-[6px]", f.flag ? "bg-destructive" : "bg-primary/70")}
-                    style={{ height: `${f.pct}%` }}
-                  />
-                </div>
-                <span className={cn("font-mono text-[10px]", f.flag ? "text-destructive" : "text-muted-foreground")}>
-                  {f.unit}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-3 flex items-start gap-2 rounded-[12px] bg-warning-container p-2.5 text-on-warning-container">
-            <AlertTriangle className="mt-0.5 size-4 shrink-0" />
-            <p className="type-body-md text-[12.5px] leading-snug">
-              Dumper-07: 38 L over model at 4.2 engine hrs. WhatsApp alert sent to site manager.
-            </p>
-          </div>
-        </Panel>
-
-        {/* Weighbridge */}
-        <Panel icon={Scale} title="Weighbridge feed" meta="Muslim Bagh WB-1 · RS232" className="lg:col-span-5">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[560px] text-left">
-              <thead>
-                <tr className="type-label-sm uppercase text-muted-foreground">
-                  <th className="pb-2 font-medium">Time</th>
-                  <th className="pb-2 font-medium">Plate</th>
-                  <th className="pb-2 font-medium">Mineral</th>
-                  <th className="pb-2 text-right font-medium">Gross (t)</th>
-                  <th className="pb-2 text-right font-medium">Tare (t)</th>
-                  <th className="pb-2 text-right font-medium">Net (t)</th>
-                  <th className="pb-2 pl-4 font-medium">e-Challan</th>
-                </tr>
-              </thead>
-              <tbody className="font-mono text-[13px]">
-                {WEIGHINGS.map((w) => (
-                  <tr key={w.plate} className="border-t border-outline-variant">
-                    <td className="py-2.5 text-muted-foreground">{w.time}</td>
-                    <td className="py-2.5">
-                      <span className="rounded-[4px] border border-outline px-1.5 py-0.5">{w.plate}</span>
-                    </td>
-                    <td className="py-2.5 font-sans">{w.mineral}</td>
-                    <td className="py-2.5 text-right">{w.gross.toFixed(2)}</td>
-                    <td className="py-2.5 text-right">{w.tare.toFixed(2)}</td>
-                    <td className="py-2.5 text-right font-semibold">{(w.gross - w.tare).toFixed(2)}</td>
-                    <td className="py-2.5 pl-4">
-                      <span className="inline-flex items-center gap-1 rounded-sm bg-success-container px-2 py-0.5 font-sans type-label-sm text-on-success-container">
-                        <BadgeCheck className="size-3.5" /> Verified
+        <div className="flex min-w-0 flex-col gap-3 lg:col-span-5">
+          {/* Ranked targets */}
+          <Panel icon={ListOrdered} title="Ranked drill targets" meta="Tap to view on map">
+            <ul className="-mx-1 flex flex-col">
+              {TARGETS.map((t, i) => {
+                const isActive = t.id === active.id;
+                return (
+                  <li key={t.id}>
+                    <button
+                      type="button"
+                      onClick={() => setActiveId(t.id)}
+                      aria-pressed={isActive}
+                      className={cn(
+                        "state-layer flex w-full items-center gap-3 rounded-[12px] px-2 py-2 text-left",
+                        isActive && "bg-primary-container text-on-primary-container",
+                      )}
+                    >
+                      <span className="w-4 font-mono text-[12px] text-muted-foreground">{i + 1}</span>
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-center gap-1.5">
+                          <span className="truncate type-title-md text-[13.5px]">{t.name}</span>
+                          {t.gsp && <BadgeCheck className="size-3.5 shrink-0 text-success" aria-label="GSP match" />}
+                        </span>
+                        <span className="block truncate type-label-sm text-muted-foreground">{t.mineral}</span>
                       </span>
-                    </td>
-                  </tr>
+                      <span className="hidden h-1.5 w-16 overflow-hidden rounded-full bg-surface-high sm:block">
+                        <span className="block h-full rounded-full bg-primary" style={{ width: `${t.score * 100}%` }} />
+                      </span>
+                      <span className="w-9 text-right font-mono text-[13px] font-medium">{t.score.toFixed(2)}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </Panel>
+
+          {/* Spectral signature */}
+          <Panel icon={Waves} title="Spectral signature" meta={`${active.id} · reflectance`} className="flex-1">
+            <div className="relative">
+              <svg viewBox="0 0 300 130" className="h-auto w-full" aria-hidden="true">
+                {[0, 1, 2, 3].map((i) => (
+                  <line key={i} x1={0} x2={300} y1={10 + i * 36} y2={10 + i * 36} className="stroke-outline-variant" strokeWidth={0.6} strokeDasharray="3 4" />
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </Panel>
+                {(() => {
+                  const x = ((active.feature - 0.4) / 2.1) * 300;
+                  return (
+                    <g>
+                      <rect x={x - 8} y={0} width={16} height={120} className="fill-anomaly/10" />
+                      <text x={x} y={128} textAnchor="middle" className="fill-anomaly font-mono" style={{ fontSize: 8 }}>
+                        {active.feature.toFixed(2)} µm
+                      </text>
+                    </g>
+                  );
+                })()}
+                <polyline points={spectrum(active.feature, active.depth * 0.45)} fill="none" className="stroke-outline" strokeWidth={1.2} strokeDasharray="4 3" />
+                <polyline points={spectrum(active.feature, active.depth)} fill="none" className="stroke-primary" strokeWidth={2} strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 type-label-sm text-muted-foreground">
+              <span className="flex items-center gap-1.5"><span className="h-0.5 w-4 bg-primary" /> Target pixel</span>
+              <span className="flex items-center gap-1.5"><span className="h-0.5 w-4 border-t border-dashed border-outline" /> Background</span>
+              <span className="ml-auto font-mono">0.4 – 2.5 µm</span>
+            </div>
+            <div className="mt-3 flex items-start gap-2 rounded-[12px] bg-secondary p-2.5 text-secondary-foreground">
+              <Radar className="mt-0.5 size-4 shrink-0 text-primary" />
+              <p className="type-body-md text-[12.5px] leading-snug">
+                {active.alteration} absorption at {active.feature.toFixed(2)} µm
+                {active.gsp ? " matches a GSP-recorded occurrence." : " — no GSP record yet, field check advised."}
+              </p>
+            </div>
+          </Panel>
+        </div>
       </div>
     </div>
   );

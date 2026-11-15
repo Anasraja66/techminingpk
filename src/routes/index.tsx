@@ -14,11 +14,12 @@ import {
   PlayCircle,
   Sparkles,
   Radar,
+  Satellite,
   Ship,
   Wrench,
 } from "lucide-react";
 
-import heroImg from "@/assets/hero-mine.jpg";
+import heroImg from "@/assets/hero-laptop-map.jpg";
 import satelliteImg from "@/assets/card-satellite.jpg";
 import gspImg from "@/assets/card-gsp-data.jpg";
 import partnerApiImg from "@/assets/card-partner-api.jpg";
@@ -180,26 +181,46 @@ function Index() {
               </Link>
             </Button>
           </div>
+
+          <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 type-label-lg text-muted-foreground">
+            <span className="type-label-sm uppercase">Data sources</span>
+            <span className="font-mono text-[12.5px] text-foreground">ESA Sentinel-2</span>
+            <span aria-hidden="true">·</span>
+            <span className="font-mono text-[12.5px] text-foreground">NASA ASTER</span>
+            <span aria-hidden="true">·</span>
+            <span className="font-mono text-[12.5px] text-foreground">Geological Survey of Pakistan</span>
+          </p>
         </div>
 
-        <div className="relative animate-rise [animation-delay:120ms]">
-          <img
-            src={heroImg}
-            alt="Open-pit mine benches and haul road in the mountains of Balochistan"
-            width={1600}
-            height={1104}
-            className="aspect-[4/3.4] w-full rounded-[28px] object-cover"
-          />
-          <div className="absolute -bottom-6 left-4 right-4 flex items-center gap-3 rounded-[16px] bg-surface-lowest p-3 shadow-elev-2 sm:left-6 sm:right-auto sm:max-w-sm">
+        <div className="relative animate-rise pb-8 [animation-delay:120ms] lg:pb-0">
+          <div className="overflow-hidden rounded-[28px] border border-outline-variant bg-surface-lowest shadow-elev-2">
+            <img
+              src={heroImg}
+              alt="Laptop showing TechMining's exploration map of Balochistan with ranked drill targets and anomaly points"
+              width={1600}
+              height={1360}
+              className="aspect-[20/17] w-full object-cover"
+            />
+          </div>
+
+          <div className="absolute top-4 right-4 hidden items-center gap-2 rounded-full bg-surface-lowest py-1.5 pr-3.5 pl-2 shadow-elev-2 sm:flex">
+            <span className="grid size-7 place-items-center rounded-full bg-primary-container text-on-primary-container">
+              <Satellite className="size-3.5" />
+            </span>
+            <span className="type-label-lg text-foreground">37 anomalies flagged</span>
+            <span className="type-label-sm text-muted-foreground">· Sentinel-2</span>
+          </div>
+
+          <div className="absolute -bottom-2 left-4 right-4 flex items-center gap-3 rounded-[16px] bg-surface-lowest p-3 shadow-elev-3 sm:left-6 sm:right-auto sm:max-w-sm lg:-bottom-6">
             <span className="grid size-11 shrink-0 place-items-center rounded-[12px] bg-primary-container text-on-primary-container">
               <Radar className="size-5" />
             </span>
             <div className="min-w-0">
-              <p className="type-label-sm uppercase text-muted-foreground">Drill target #04 · Chagai</p>
+              <p className="type-label-sm uppercase text-muted-foreground">Drill target #01 · Chagai</p>
               <p className="truncate type-title-md">Cu-Au alteration · GSP match</p>
             </div>
-            <span className="ml-auto rounded-sm bg-success-container px-2 py-0.5 type-label-sm text-on-success-container">
-              High
+            <span className="ml-auto rounded-sm bg-success-container px-2 py-0.5 font-mono type-label-sm text-on-success-container">
+              0.92
             </span>
           </div>
         </div>
@@ -297,7 +318,7 @@ function Index() {
               <SectionLabel>Your control room</SectionLabel>
               <h2 className="mt-3 type-headline-lg">This is the screen you'll use every day.</h2>
               <p className="mt-3 type-body-lg text-muted-foreground">
-                Trucks weighed, challans issued, diesel alerts and grade — all live, all in one place.
+                Satellite anomalies, GSP-confirmed occurrences and ranked drill targets — tap any target to see why it scored high.
               </p>
             </div>
             <Button variant="outline" className="md:ml-auto" asChild>

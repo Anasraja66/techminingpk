@@ -53,7 +53,7 @@ function spectrum(feature: number, depth: number, w = 300, h = 120) {
   for (let i = 0; i <= 60; i++) {
     const wl = 0.4 + (i / 60) * 2.1;
     const continuum = 0.18 + 0.32 * (1 - Math.exp(-(wl - 0.35) * 1.6));
-    const absorb = depth * Math.exp(-((wl - feature) ** 2) / (2 * 0.035 ** 2));
+    const absorb = depth * 1.5 * Math.exp(-((wl - feature) ** 2) / (2 * 0.035 ** 2));
     const water = 0.08 * Math.exp(-((wl - 1.92) ** 2) / (2 * 0.05 ** 2));
     const r = continuum * (1 - absorb) - water;
     pts.push(`${((i / 60) * w).toFixed(1)},${(h - r * h * 1.6).toFixed(1)}`);
@@ -183,8 +183,8 @@ export function DashboardMock() {
                 })}
                 {/* scale bar: ~200 km */}
                 {(() => {
-                  const [x0] = project(72.6, 24);
-                  const [x1] = project(72.6 + 200 / (111 * Math.cos((30 * Math.PI) / 180)), 24);
+                  const [x0] = project(61, 24);
+                  const [x1] = project(61 + 200 / (111 * Math.cos((30 * Math.PI) / 180)), 24);
                   const y = MAP_H - 40;
                   return (
                     <g className="hidden sm:block">

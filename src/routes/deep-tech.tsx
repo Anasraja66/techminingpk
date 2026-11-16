@@ -77,8 +77,8 @@ function DeepTech() {
           <SectionLabel>Live demo</SectionLabel>
           <h2 className="mt-3 max-w-2xl type-headline-lg">The control room, as your site manager sees it.</h2>
           <p className="mt-3 max-w-2xl type-body-lg text-muted-foreground">
-            Hover the hotspots for alteration type and model confidence. Sample data from a
-            Balochistan demo tenancy.
+            Real Sentinel-2 imagery, USGS mineral records and published deposit figures. Tap a
+            deposit to see its grade, tonnage and source.
           </p>
           <div className="mt-8">
             <DashboardMock />

@@ -34,3 +34,4 @@ use the editor.
 - Design tokens are MD3 roles (surface-*, primary-container, outline-variant) plus `type-*`, `card-*` and `state-layer` utilities in `src/styles.css`; components use these instead of raw colors — keeps the Material look consistent.
 
 - AI Site Advisor: shared types, service catalog and output normalizer live in `src/lib/advisor.ts`; the AI Gateway call stays in the `advisor.functions.ts` server function — model output is filtered to the catalog so visitors are only offered real TechMining services.
+- Dashboard map data (USGS MRDS sites, major-deposit figures with source links) lives in `src/components/site/pakistanDeposits.ts`; the satellite basemap is a CDN asset pointer drawn in the same projection as `pakistanMap.ts` — keeps every on-screen number traceable to a public source.

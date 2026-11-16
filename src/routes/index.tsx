@@ -207,8 +207,8 @@ function Index() {
             <span className="grid size-7 place-items-center rounded-full bg-primary-container text-on-primary-container">
               <Satellite className="size-3.5" />
             </span>
-            <span className="type-label-lg text-foreground">37 anomalies flagged</span>
-            <span className="type-label-sm text-muted-foreground">· Sentinel-2</span>
+            <span className="type-label-lg text-foreground">48 USGS mineral sites</span>
+            <span className="type-label-sm text-muted-foreground">· Pakistan</span>
           </div>
 
           <div className="absolute -bottom-2 left-4 right-4 flex items-center gap-3 rounded-[16px] bg-surface-lowest p-3 shadow-elev-3 sm:left-6 sm:right-auto sm:max-w-sm lg:-bottom-6">
@@ -216,11 +216,11 @@ function Index() {
               <Radar className="size-5" />
             </span>
             <div className="min-w-0">
-              <p className="type-label-sm uppercase text-muted-foreground">Drill target #01 · Chagai</p>
-              <p className="truncate type-title-md">Cu-Au alteration · GSP match</p>
+              <p className="type-label-sm uppercase text-muted-foreground">Reko Diq reserve · Barrick 2024</p>
+              <p className="truncate type-title-md">3.0 Bt @ 0.48% Cu</p>
             </div>
-            <span className="ml-auto rounded-sm bg-success-container px-2 py-0.5 font-mono type-label-sm text-on-success-container">
-              0.92
+            <span className="ml-auto shrink-0 whitespace-nowrap rounded-sm bg-success-container px-2 py-0.5 font-mono type-label-sm text-on-success-container">
+              15 Mt Cu
             </span>
           </div>
         </div>
@@ -318,7 +318,7 @@ function Index() {
               <SectionLabel>Your control room</SectionLabel>
               <h2 className="mt-3 type-headline-lg">This is the screen you'll use every day.</h2>
               <p className="mt-3 type-body-lg text-muted-foreground">
-                Satellite anomalies, GSP-confirmed occurrences and ranked drill targets — tap any target to see why it scored high.
+                Real Sentinel-2 imagery, every USGS-recorded mineral site in Pakistan and published deposit figures — tap a deposit to see its numbers and source.
               </p>
             </div>
             <Button variant="outline" className="md:ml-auto" asChild>

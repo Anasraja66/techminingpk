@@ -216,11 +216,11 @@ function Index() {
               <Radar className="size-5" />
             </span>
             <div className="min-w-0">
-              <p className="type-label-sm uppercase text-muted-foreground">Reko Diq · Chagai</p>
-              <p className="truncate type-title-md">3.0 Bt reserve @ 0.48% Cu</p>
+              <p className="type-label-sm uppercase text-muted-foreground">Reko Diq reserve · Barrick 2024</p>
+              <p className="truncate type-title-md">3.0 Bt @ 0.48% Cu</p>
             </div>
-            <span className="ml-auto rounded-sm bg-success-container px-2 py-0.5 font-mono type-label-sm text-on-success-container">
-              Barrick 2024
+            <span className="ml-auto shrink-0 whitespace-nowrap rounded-sm bg-success-container px-2 py-0.5 font-mono type-label-sm text-on-success-container">
+              15 Mt Cu
             </span>
           </div>
         </div>

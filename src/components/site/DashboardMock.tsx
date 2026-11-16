@@ -104,8 +104,8 @@ export function DashboardMock() {
         {KPIS.map((k) => (
           <div key={k.label} className="rounded-[16px] bg-surface-lowest px-4 py-3">
             <dt className="type-label-sm uppercase text-muted-foreground">{k.label}</dt>
-            <dd className="mt-1 flex items-baseline gap-2">
-              <span className="font-mono text-[20px] font-medium text-foreground">{k.value}</span>
+            <dd className="mt-1 flex flex-wrap items-baseline gap-x-2">
+              <span className="whitespace-nowrap font-mono text-[20px] font-medium text-foreground">{k.value}</span>
               <span className="truncate type-label-sm text-muted-foreground">{k.source}</span>
             </dd>
           </div>
@@ -261,7 +261,8 @@ export function DashboardMock() {
                 <p className="hidden font-mono text-[11px] text-muted-foreground sm:block">
                   {active.lat.toFixed(2)}°N {active.lon.toFixed(2)}°E
                 </p>
-                <p className="mt-1 type-body-md text-[12px] text-foreground">{active.figure}</p>
+                <p className="mt-1 hidden type-body-md text-[12px] text-foreground sm:block">{active.figure}</p>
+                <p className="font-mono text-[11px] text-foreground sm:hidden">{active.headline}</p>
               </div>
 
               {/* legend + north arrow */}

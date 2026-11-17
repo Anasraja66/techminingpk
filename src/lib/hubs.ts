@@ -132,7 +132,7 @@ export const HUBS: Hub[] = [
       { mineral: "Land surface change", feature: "Multi-date Sentinel-2", meaning: "Mine-block and dump expansion" },
     ],
     places: [
-      { name: "Thar coalfield (Islamkot)", lon: 70.18, lat: 24.7, note: "Lignite · Blocks I & II producing", major: true },
+      { name: "Thar coalfield (Islamkot)", lon: 70.18, lat: 24.7, note: "Lignite · open-pit mining since 2019", major: true },
       { name: "Nagarparkar", lon: 70.74, lat: 24.36, note: "Granite outcrop · china clay" },
     ],
   },

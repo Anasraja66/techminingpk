@@ -18,6 +18,8 @@ import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ResearchRouteImport } from './routes/research'
 import { Route as SolutionsRouteImport } from './routes/solutions'
+import { Route as HubsIndexRouteImport } from './routes/hubs.index'
+import { Route as HubsSlugRouteImport } from './routes/hubs.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +66,16 @@ const SolutionsRoute = SolutionsRouteImport.update({
   path: '/solutions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HubsIndexRoute = HubsIndexRouteImport.update({
+  id: '/hubs/',
+  path: '/hubs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HubsSlugRoute = HubsSlugRouteImport.update({
+  id: '/hubs/$slug',
+  path: '/hubs/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +87,8 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
+  '/hubs/$slug': typeof HubsSlugRoute
+  '/hubs/': typeof HubsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +100,8 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
+  '/hubs/$slug': typeof HubsSlugRoute
+  '/hubs': typeof HubsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +114,8 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/research': typeof ResearchRoute
   '/solutions': typeof SolutionsRoute
+  '/hubs/$slug': typeof HubsSlugRoute
+  '/hubs/': typeof HubsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +129,8 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/research'
     | '/solutions'
+    | '/hubs/$slug'
+    | '/hubs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +142,8 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/research'
     | '/solutions'
+    | '/hubs/$slug'
+    | '/hubs'
   id:
     | '__root__'
     | '/'
@@ -133,6 +155,8 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/research'
     | '/solutions'
+    | '/hubs/$slug'
+    | '/hubs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +169,8 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   ResearchRoute: typeof ResearchRoute
   SolutionsRoute: typeof SolutionsRoute
+  HubsSlugRoute: typeof HubsSlugRoute
+  HubsIndexRoute: typeof HubsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -212,6 +238,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hubs/': {
+      id: '/hubs/'
+      path: '/hubs'
+      fullPath: '/hubs/'
+      preLoaderRoute: typeof HubsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hubs/$slug': {
+      id: '/hubs/$slug'
+      path: '/hubs/$slug'
+      fullPath: '/hubs/$slug'
+      preLoaderRoute: typeof HubsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -225,6 +265,8 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   ResearchRoute: ResearchRoute,
   SolutionsRoute: SolutionsRoute,
+  HubsSlugRoute: HubsSlugRoute,
+  HubsIndexRoute: HubsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

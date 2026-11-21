@@ -1,6 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, type LucideIcon } from "lucide-react";
 
+import type { Status } from "@/lib/platform";
+import { StatusBadge } from "./StatusBadge";
+
 export type Service = {
   n: string;
   tag: string;
@@ -11,6 +14,7 @@ export type Service = {
   title: string;
   body: string;
   outcome: string;
+  status: Status;
 };
 
 /** MD3 outlined media card: real photo, chip, caption pill, body and an outcome footer. */
@@ -31,8 +35,9 @@ export function ServiceCard({ s }: { s: Service }) {
           className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
         <span className="absolute top-3 left-3 rounded-sm bg-surface-lowest px-2.5 py-1 type-label-sm uppercase tracking-wide text-primary shadow-elev-1">
-          Pillar {s.n} · {s.tag}
+          {s.n} · {s.tag}
         </span>
+        <StatusBadge status={s.status} className="absolute top-3 right-3 shadow-elev-1" />
         <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-sm bg-inverse-surface/85 px-2.5 py-1.5 font-mono text-[12px] text-inverse-on-surface">
           <Icon className="size-3.5" />
           {s.caption}

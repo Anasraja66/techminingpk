@@ -44,7 +44,7 @@ export function SiteHeader() {
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
           <Button variant="outline" asChild>
-            <Link to="/contact">Book Site Audit</Link>
+            <Link to="/contact">Request Area Audit</Link>
           </Button>
           <Button asChild>
             <Link to="/advisor">
@@ -78,7 +78,7 @@ export function SiteHeader() {
             </nav>
             <div className="mt-6 flex flex-col gap-2 border-t border-outline-variant px-1 pt-6">
               <Button variant="outline" asChild onClick={() => setOpen(false)}>
-                <Link to="/contact">Book Site Audit</Link>
+                <Link to="/contact">Request Area Audit</Link>
               </Button>
               <Button asChild onClick={() => setOpen(false)}>
                 <Link to="/advisor">

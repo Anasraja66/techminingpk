@@ -92,7 +92,7 @@ export function DashboardMock() {
           <span className="size-2.5 rounded-full bg-outline-variant" />
         </div>
         <p className="min-w-0 truncate font-mono text-[12px] text-muted-foreground">
-          techmining.pk / exploration / pakistan
+          techminingglobal.com / hubs / pakistan
         </p>
         <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full bg-success-container px-2.5 py-0.5 type-label-sm text-on-success-container">
           <Database className="size-3" /> Public data

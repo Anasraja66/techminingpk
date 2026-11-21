@@ -4,8 +4,8 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function CtaBand({
-  title = "See your concession through TechMining.",
-  body = "A two-day on-site audit maps your weighbridge, fleet and grade-control gaps — with a written loss estimate.",
+  title = "Screen your area — anywhere in the world.",
+  body = "Send us a concession polygon or coordinates. An Area Audit returns a prospectivity map and geologist-reviewed zones.",
 }: {
   title?: string;
   body?: string;
@@ -20,7 +20,7 @@ export function CtaBand({
         <div className="flex flex-wrap gap-3 md:ml-auto">
           <Button size="lg" variant="onPrimary" asChild>
             <Link to="/contact">
-              Schedule a Mine Audit <ArrowRight />
+              Request an Area Audit <ArrowRight />
             </Link>
           </Button>
         </div>

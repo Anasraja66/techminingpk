@@ -26,21 +26,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PageIntro, SectionLabel } from "@/components/site/PageIntro";
+import { StatusBadge } from "@/components/site/StatusBadge";
 
 export const Route = createFileRoute("/partners")({
   head: () => ({
     meta: [
-      { title: "Partners & API Access — TechMining" },
+      { title: "Partners & API Access — TechMining Global" },
       {
         name: "description",
         content:
-          "Build on Pakistan's only mineral intelligence layer: GSP-integrated satellite anomaly data, ranked drill targets and spectral signatures via the TechMining API.",
+          "Partner with TechMining Global: reviewed zones and prospectivity scores for concessions worldwide, starting with Pakistan's Chagai, Muslim Bagh, Thar and Swat hubs. Partner API planned — pilot partners get early access.",
       },
-      { property: "og:title", content: "Partners & API Access — TechMining" },
+      { property: "og:title", content: "Partners & API Access — TechMining Global" },
       {
         property: "og:description",
         content:
-          "Data, channel and technology partnerships for Balochistan, KP and GB mineral intelligence.",
+          "Data, channel and technology partnerships for a global mineral prospectivity layer.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -54,7 +55,7 @@ const TIERS = [
     icon: Database,
     name: "Data Partner",
     who: "Software companies, consultancies, research institutes",
-    what: "Access mineral anomaly maps and drill-target rankings via REST API.",
+    what: "Access reviewed zones and prospectivity scores via REST API (planned — early access for pilot partners).",
     example: "Pull JSON anomaly data into your own GIS or dashboard",
     cta: "Apply for API Access",
     useCase: "GIS Platform",
@@ -63,17 +64,17 @@ const TIERS = [
     icon: Handshake,
     name: "Channel Partner",
     who: "Mining consultancies, geological firms, regional agents",
-    what: "Resell TechMining exploration reports under your brand in your market. We provide the satellite analysis, you deliver to your clients.",
-    example: "Exclusive Pakistan channel partner for TerraEye-class reports",
+    what: "Resell TechMining Area Audits under your brand in your market. We run the screening and review, you deliver to your clients.",
+    example: "Regional channel partner for Area Audits in your country",
     cta: "Become a Channel Partner",
     useCase: "Consultancy",
   },
   {
     icon: Code2,
     name: "Technology Partner",
-    who: "Global exploration tech companies entering Pakistan",
-    what: "White-label our satellite AI engine + GSP data layer for your platform. We handle local licensing, GSP relationships and ground truth.",
-    example: "Your platform, our Pakistan intelligence layer",
+    who: "Exploration tech companies entering new regions",
+    what: "Use our screening engine and hub data on your platform. In Pakistan we add local survey data and ground knowledge.",
+    example: "Your platform, our prospectivity layer",
     cta: "Discuss Technology Partnership",
     useCase: "Exploration Software",
   },
@@ -82,8 +83,8 @@ const TIERS = [
 const API_FEATURES = [
   { icon: MapPinned, label: "Mineral anomaly coordinates (GeoJSON)" },
   { icon: Waves, label: "Spectral band ratios (Sentinel-2 SWIR B11/B12, ASTER TIR)" },
-  { icon: ShieldCheck, label: "GSP ground-truth match score per anomaly" },
-  { icon: Crosshair, label: "Drill-target ranking (High / Moderate / Low confidence)" },
+  { icon: ShieldCheck, label: "Reviewed-zone flag and geologist note per zone" },
+  { icon: Crosshair, label: "Random Forest prospectivity score (0–1) per cell" },
   { icon: Layers, label: "Concession boundary overlay support" },
   { icon: Bell, label: "Webhook alerts for new satellite passes over your AOI" },
 ];
@@ -103,8 +104,8 @@ const SAMPLE_JSON = `{
   "properties": {
     "target_id": "CHG-04",
     "swir_ratio_b11_b12": 1.37,
-    "gsp_match_score": 0.86,
-    "confidence": "High"
+    "prospectivity_rf": 0.86,
+    "zone_status": "reviewed"
   }
 }`;
 
@@ -124,17 +125,17 @@ function Partners() {
       return;
     }
     setSent(true);
-    toast.success("Request received. We'll be in touch with API documentation.");
+    toast.success("Request received. We'll be in touch about early access.");
   }
 
   return (
     <>
       <PageIntro
         label="Partners & API Access"
-        title="Build on Pakistan's Only Mineral Intelligence Layer"
+        title="Build on a global mineral prospectivity layer"
       >
-        TechMining's API gives your platform access to GSP-integrated satellite anomaly data,
-        ranked drill targets and spectral signatures — for Balochistan, KP and GB concessions.
+        Reviewed zones, prospectivity scores and spectral signatures for concessions in any country —
+        starting with our Pakistan hubs in Chagai, Muslim Bagh, Thar and Swat.
       </PageIntro>
 
       {/* Tiers */}
@@ -176,7 +177,10 @@ function Partners() {
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_1fr] lg:items-center">
           <div>
             <SectionLabel>API</SectionLabel>
-            <h2 className="mt-3 type-headline-lg">What you get from the API</h2>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <h2 className="type-headline-lg">What the API will return</h2>
+              <StatusBadge status="Planned" />
+            </div>
             <ul className="mt-8 grid gap-3">
               {API_FEATURES.map((f) => (
                 <li key={f.label} className="flex items-start gap-3 rounded-[12px] bg-surface-lowest p-4">
@@ -233,13 +237,13 @@ function Partners() {
             <SectionLabel>Get started</SectionLabel>
             <h2 className="mt-3 type-headline-lg">Ready to integrate?</h2>
             <p className="mt-3 type-body-lg text-muted-foreground">
-              Tell us your use case and we'll send you API documentation and a sandbox key within
-              48 hours.
+              The API is Planned. Tell us your use case and we'll add you to the early-access list for
+              pilot partners.
             </p>
             <p className="mt-6 type-body-md text-muted-foreground">
               Looking for pricing?{" "}
               <Link to="/pricing" className="text-primary hover:underline">
-                See the Partner API plan →
+                See the Mineral Intelligence Pilot →
               </Link>
             </p>
           </div>
@@ -252,7 +256,7 @@ function Partners() {
                 </span>
                 <h3 className="type-headline-sm">Request received.</h3>
                 <p className="max-w-md type-body-lg text-muted-foreground">
-                  We'll email your API documentation and sandbox key within 48 hours.
+                  We'll email you when early API access opens for pilot partners.
                 </p>
                 <Button variant="tonal" onClick={() => setSent(false)}>
                   Send another request

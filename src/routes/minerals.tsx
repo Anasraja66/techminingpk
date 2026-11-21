@@ -11,16 +11,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export const Route = createFileRoute("/minerals")({
   head: () => ({
     meta: [
-      { title: "Critical Minerals — Copper, Chromite, Lithium | TechMining" },
+      { title: "Critical Minerals — Copper, Chromite, Lithium | TechMining Global" },
       {
         name: "description",
         content:
-          "Pakistan's critical mineral belts: copper & gold in Chagai and Reko Diq, chromite in Muslim Bagh and Zhob, lithium & rare earths in KP and Gilgit.",
+          "The critical minerals TechMining Global screens for worldwide — copper & gold, chromite, lithium & rare earths — with examples from our Pakistan hubs.",
       },
-      { property: "og:title", content: "Critical Minerals — Copper, Chromite, Lithium | TechMining" },
+      { property: "og:title", content: "Critical Minerals — Copper, Chromite, Lithium | TechMining Global" },
       {
         property: "og:description",
-        content: "Where Pakistan's critical minerals are — and what the world needs them for.",
+        content: "The mineral systems we screen for, and what the world needs them for.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -74,8 +74,8 @@ const MINERALS = [
 function Minerals() {
   return (
     <>
-      <PageIntro label="Critical minerals" title="What lies under Balochistan and the north.">
-        Three mineral systems Pakistan can bring to a supply chain the world is rebuilding.
+      <PageIntro label="Critical minerals" title="The mineral systems we screen for.">
+        Three systems the world's supply chains need — screened anywhere, with worked examples from our Pakistan hubs.
       </PageIntro>
 
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6">
@@ -130,8 +130,8 @@ function Minerals() {
       </section>
 
       <CtaBand
-        title="Exporting copper, chromite or lithium?"
-        body="Grade control and verified dispatch records make your cargo easier to finance and harder to reject."
+        title="Looking for copper, chromite or lithium?"
+        body="Send us your area. An Area Audit screens it for these systems and returns geologist-reviewed zones."
       />
     </>
   );

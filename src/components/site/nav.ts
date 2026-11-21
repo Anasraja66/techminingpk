@@ -1,8 +1,8 @@
 export const NAV_LINKS = [
-  { to: "/solutions", label: "Solutions" },
-  { to: "/deep-tech", label: "Deep Tech" },
-  { to: "/minerals", label: "Critical Minerals" },
+  { to: "/solutions", label: "Platform" },
+  { to: "/hubs", label: "Hubs" },
+  { to: "/deep-tech", label: "Technology" },
   { to: "/research", label: "Research" },
   { to: "/partners", label: "Partners" },
-  { to: "/pricing", label: "Pricing" },
+  { to: "/pricing", label: "Services" },
 ] as const;

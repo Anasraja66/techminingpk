@@ -84,17 +84,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TechMining — Mineral Intelligence & Mining ERP for Pakistan" },
+      { title: "TechMining Global — Mineral Prospectivity Screening" },
       {
         name: "description",
         content:
-          "Satellite mineral AI, tamper-proof weighbridge e-challans, fuel theft telemetry and ore grade control for Pakistan's mining sector.",
+          "Satellite mineral prospectivity screening and geologist-reviewed zones for concessions in any country.",
       },
-      { name: "author", content: "TechMining" },
-      { property: "og:title", content: "TechMining — Mineral Intelligence & Mining ERP for Pakistan" },
+      { name: "author", content: "TechMining Global" },
+      { property: "og:title", content: "TechMining Global — Mineral Prospectivity Screening" },
       {
         property: "og:description",
-        content: "Satellite mineral AI and cloud mining ERP for Balochistan, KP and beyond.",
+        content: "Prospectivity screening and Reviewed Zones, worldwide.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -1,25 +1,23 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin, ShieldCheck } from "lucide-react";
+import { Globe2, Satellite } from "lucide-react";
 
+import { BRAND } from "@/lib/platform";
 import { Logo } from "./Logo";
 import { NAV_LINKS } from "./nav";
 
-export function ComplianceStrip() {
+/** Open public data sources behind every map and number on the site. */
+export function DataSourcesStrip() {
   return (
     <section className="border-y border-outline-variant bg-surface-low">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:px-6 md:flex-row md:items-center">
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-full bg-primary-container text-on-primary-container">
-            <ShieldCheck className="size-5" />
+            <Satellite className="size-5" />
           </span>
-          <p className="type-title-md">Built for provincial compliance</p>
+          <p className="type-title-md">Built on open, global data</p>
         </div>
         <ul className="flex flex-wrap gap-2 md:ml-auto">
-          {[
-            "Mines & Minerals Dept. Balochistan",
-            "KP Mineral Development Act",
-            "SIFC regulatory harmonization",
-          ].map((t) => (
+          {["ESA Copernicus Sentinel-2", "NASA ASTER", "NASA HLS", "USGS MRDS", "Geological Survey of Pakistan"].map((t) => (
             <li
               key={t}
               className="rounded-sm border border-outline-variant bg-surface-lowest px-3 py-1.5 type-label-lg text-muted-foreground"
@@ -40,11 +38,11 @@ export function SiteFooter() {
         <div className="max-w-sm">
           <Logo />
           <p className="mt-4 type-body-md text-muted-foreground">
-            Mineral intelligence and mining ERP for Pakistan's leaseholders, exporters and
-            regulators — from satellite to weighbridge.
+            Mineral prospectivity screening and geologist-reviewed zones for concessions in any
+            country. Launch region: {BRAND.launchRegion}.
           </p>
           <p className="mt-6 flex items-center gap-2 type-label-lg text-foreground">
-            <MapPin className="size-4 text-primary" /> Quetta · Islamabad · Karachi
+            <Globe2 className="size-4 text-primary" /> {BRAND.domain}
           </p>
         </div>
         <div>
@@ -64,17 +62,17 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2.5">
             <li>
               <Link to="/contact" className="type-body-md text-foreground hover:text-primary">
-                Book a site audit
+                Request an Area Audit
               </Link>
             </li>
             <li>
-              <Link to="/research" className="type-body-md text-foreground hover:text-primary">
-                Scientific foundations
+              <Link to="/minerals" className="type-body-md text-foreground hover:text-primary">
+                Critical minerals
               </Link>
             </li>
             <li>
-              <Link to="/pricing" className="type-body-md text-foreground hover:text-primary">
-                Engagement models
+              <Link to="/advisor" className="type-body-md text-foreground hover:text-primary">
+                AI Site Advisor
               </Link>
             </li>
           </ul>
@@ -82,8 +80,8 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-outline-variant">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 type-body-md text-muted-foreground sm:flex-row sm:justify-between sm:px-6">
-          <span>© {new Date().getFullYear()} TechMining (Pvt.) Ltd.</span>
-          <span>Made in Pakistan for Pakistan's mineral sector</span>
+          <span>© {new Date().getFullYear()} {BRAND.name}</span>
+          <span>Screening concessions worldwide · launched in Pakistan</span>
         </div>
       </div>
     </footer>

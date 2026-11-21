@@ -1,23 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { BookOpen, FlaskConical, Microscope } from "lucide-react";
+import { BookOpen, BrainCircuit, Microscope, Trees } from "lucide-react";
 
 import { CtaBand } from "@/components/site/CtaBand";
 import { PageIntro } from "@/components/site/PageIntro";
-import { ComplianceStrip } from "@/components/site/SiteFooter";
+import { DataSourcesStrip } from "@/components/site/SiteFooter";
 
 export const Route = createFileRoute("/research")({
   head: () => ({
     meta: [
-      { title: "Research — Scientific Foundations | TechMining" },
+      { title: "Research — Scientific Foundations | TechMining Global" },
       {
         name: "description",
         content:
-          "The peer-reviewed science behind TechMining: USGS Chagai porphyry studies, MDPI Remote Sensing work on Lasbela ophiolites, and IoT underground mine safety research.",
+          "The published science behind TechMining Global: Random Forest prospectivity mapping, the NASA-IBM Prithvi-EO-2.0 foundation model, USGS porphyry studies and ophiolite spectral mapping.",
       },
-      { property: "og:title", content: "Research — Scientific Foundations | TechMining" },
+      { property: "og:title", content: "Research — Scientific Foundations | TechMining Global" },
       {
         property: "og:description",
-        content: "Peer-reviewed benchmarks behind our satellite and IoT models.",
+        content: "Published benchmarks behind our screening model and Reviewed Zones.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -32,21 +32,28 @@ const PAPERS = [
     source: "USGS",
     title: "Chagai belt porphyry copper assessments",
     body: "Regional porphyry Cu-Au models for the Chagai magmatic arc. We use them to calibrate alteration-zone priors around Reko Diq and Saindak.",
-    applies: "Satellite exploration model",
+    applies: "Chagai hub screening",
   },
   {
     icon: Microscope,
     source: "MDPI · Remote Sensing",
     title: "Multispectral mapping of the Lasbela ophiolites",
     body: "Band-ratio and spectral-angle methods for discriminating serpentinite and chromite-hosting units — the basis of our chromite targeting layer.",
-    applies: "Chromite targeting",
+    applies: "Muslim Bagh hub screening",
   },
   {
-    icon: FlaskConical,
-    source: "Springer",
-    title: "IoT systems for underground mine safety",
-    body: "Sensor-network architectures for gas, vibration and equipment telemetry in constrained mine environments. Informs our fleet and edge-device design.",
-    applies: "Fleet & fuel telemetry",
+    icon: Trees,
+    source: "Ore Geology Reviews · 2015",
+    title: "Machine learning for mineral prospectivity",
+    body: "Rodriguez-Galiano et al. compare random forest, neural networks, regression trees and SVMs for prospectivity mapping — the benchmark behind our choice of Random Forest.",
+    applies: "Prospectivity Screening (Live)",
+  },
+  {
+    icon: BrainCircuit,
+    source: "NASA · IBM · Jülich · 2024",
+    title: "Prithvi-EO-2.0 foundation model",
+    body: "An open geospatial foundation model pretrained on 4.2M Harmonized Landsat Sentinel-2 time series. We are fine-tuning it to add learned features to our model.",
+    applies: "Foundation-model features (Planned)",
   },
 ];
 
@@ -54,12 +61,12 @@ function Research() {
   return (
     <>
       <PageIntro label="Research" title="Built on published geology, not guesswork.">
-        Every model we ship is benchmarked against peer-reviewed work on Pakistan's own
-        terrain. These are the foundations our team returns to.
+        Every model we ship is benchmarked against published work — global methods, tested first
+        on our Pakistan hubs. These are the foundations our team returns to.
       </PageIntro>
 
       <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-2">
           {PAPERS.map((p) => (
             <article key={p.title} className="card-outlined flex flex-col p-6">
               <div className="flex items-center gap-3">
@@ -79,7 +86,7 @@ function Research() {
         </div>
       </section>
 
-      <ComplianceStrip />
+      <DataSourcesStrip />
       <CtaBand />
     </>
   );

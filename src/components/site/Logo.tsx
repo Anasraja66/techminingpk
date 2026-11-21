@@ -14,10 +14,13 @@ export function LogoMark({ className = "size-8" }: { className?: string }) {
 
 export function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-2.5 rounded-full pr-2" aria-label="TechMining home">
+    <Link to="/" className="flex items-center gap-2.5 rounded-full pr-2" aria-label="TechMining Global home">
       <LogoMark />
       <span className="type-title-lg tracking-tight text-foreground">
         Tech<span className="text-primary">Mining</span>
+      </span>
+      <span className="rounded-sm border border-outline-variant px-1.5 py-0.5 type-label-sm uppercase tracking-[0.12em] text-muted-foreground">
+        Global
       </span>
     </Link>
   );

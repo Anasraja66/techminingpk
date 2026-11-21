@@ -18,16 +18,16 @@ import { PageIntro } from "@/components/site/PageIntro";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Book a Site Audit — TechMining" },
+      { title: "Request an Area Audit — TechMining Global" },
       {
         name: "description",
         content:
-          "Request a TechMining mine audit or live demo. Teams in Quetta, Islamabad and Karachi.",
+          "Request a TechMining Global Area Audit or Mineral Intelligence Pilot for a concession in any country.",
       },
-      { property: "og:title", content: "Book a Site Audit — TechMining" },
+      { property: "og:title", content: "Request an Area Audit — TechMining Global" },
       {
         property: "og:description",
-        content: "Request a mine audit or a live product demo.",
+        content: "Send your area — get a prospectivity map and reviewed zones.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/contact")({
   component: Contact,
 });
 
-const MINERALS = ["Copper / Gold", "Chromite", "Lithium / Rare earths", "Coal", "Marble / Granite", "Other"];
+const MINERALS = ["Copper / Gold", "Chromite", "Lithium / Rare earths", "Gemstones", "Coal", "Marble / Granite", "Other"];
 
 function Contact() {
   const [mineral, setMineral] = useState("");
@@ -49,14 +49,14 @@ function Contact() {
       return;
     }
     setSent(true);
-    toast.success("Request received. Our team will call you within one working day.");
+    toast.success("Request received. We'll be in touch within one working day.");
   }
 
   return (
     <>
-      <PageIntro label="Contact" title="Book a site audit or live demo.">
-        Tell us where you mine and what you mine. A field engineer from our nearest office
-        will reach out.
+      <PageIntro label="Contact" title="Request an Area Audit or a pilot.">
+        Tell us where your ground is and what you are looking for. We work with concessions in any
+        country.
       </PageIntro>
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 pb-20 sm:px-6 lg:grid-cols-[1.3fr_0.7fr]">
@@ -68,7 +68,7 @@ function Contact() {
               </span>
               <h2 className="type-headline-sm">Thank you — we've got it.</h2>
               <p className="max-w-md type-body-lg text-muted-foreground">
-                Expect a call within one working day to schedule your audit.
+                We'll be in touch within one working day to scope your area.
               </p>
               <Button variant="tonal" onClick={() => setSent(false)}>
                 Send another request
@@ -81,10 +81,14 @@ function Contact() {
                 <Input id="name" name="name" required autoComplete="name" placeholder="Muhammad Asif" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="concession">Mine concession / district</Label>
-                <Input id="concession" name="concession" required placeholder="e.g. Muslim Bagh, Killa Saifullah" />
+                <Label htmlFor="country">Country</Label>
+                <Input id="country" name="country" required autoComplete="country-name" placeholder="e.g. Pakistan, Zambia, Chile" />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="concession">Concession / area</Label>
+                <Input id="concession" name="concession" required placeholder="Licence no., district or coordinates" />
+              </div>
+              <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="mineral">Mineral type</Label>
                 <Select value={mineral} onValueChange={setMineral}>
                   <SelectTrigger id="mineral">
@@ -101,11 +105,11 @@ function Contact() {
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="reach">Phone or email</Label>
-                <Input id="reach" name="reach" required placeholder="+92 300 0000000 or you@company.pk" />
+                <Input id="reach" name="reach" required placeholder="Phone with country code, or email" />
               </div>
               <div className="flex flex-wrap items-center gap-4 pt-2 sm:col-span-2">
                 <Button type="submit" size="lg">
-                  Request audit
+                  Send request
                 </Button>
                 <p className="type-body-md text-muted-foreground">No obligation. We reply within a working day.</p>
               </div>
@@ -115,9 +119,9 @@ function Contact() {
 
         <aside className="space-y-3">
           {[
-            { icon: MapPin, title: "Offices", body: "Quetta · Islamabad · Karachi" },
+            { icon: MapPin, title: "Coverage", body: "Area Audits in any country · Pakistan hubs" },
             { icon: Clock, title: "Response time", body: "Within one working day" },
-            { icon: Phone, title: "Field visits", body: "Balochistan, KP & Gilgit-Baltistan" },
+            { icon: Phone, title: "Services", body: "Area Audit · Mineral Intelligence Pilot" },
           ].map((i) => (
             <div key={i.title} className="card-filled flex items-start gap-4 p-5">
               <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary-container text-on-primary-container">
